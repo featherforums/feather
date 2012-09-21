@@ -42,6 +42,21 @@ return array(
 	|
 	*/
 
-	'components' => array()
+	'components' => array(),
+
+	/*
+	|--------------------------------------------------------------------------
+	| Feather Applications
+	|--------------------------------------------------------------------------
+	|
+	| Applications to be registered at runtime with Feather. It is advised you
+	| do not edit anything down there.
+	|
+	*/
+
+	'applications' => array(
+		'admin' => '(:feather)/admin',
+		'core' 	=> '(:feather)'
+	),
 
 );
