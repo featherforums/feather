@@ -62,7 +62,7 @@ $feather['config'] = $feather->share(function()
 
 define('FEATHER_DATABASE', 'feather');
 
-$feather['config']->set('laravel: database.connections.' . FEATHER_DATABASE, $feather['config']->get('feather: database'));
+$feather['config']->set('laravel: database.connections.' . FEATHER_DATABASE, $feather['config']->get('feather: feather.database'));
 
 $feather['config']->db();
 
@@ -90,3 +90,15 @@ require path('feather') . 'start' . DS . 'facades' . EXT;
 | with the Laravel bundle manager.
 |
 */
+
+foreach($feather['config']->get('feather: feather.applications') as $application => $handles)
+{
+	$handles = str_replace('(:feather)', Bundle::option('feather', 'handles'), $handles);
+
+	Bundle::register("feather/{$application}", array(
+		'handles'  => $handles,
+		'location' => "feather/applications/{$application}"
+	));
+
+	starts_with(Request::uri(), $handles) and Bundle::start("feather/{$application}");
+}
