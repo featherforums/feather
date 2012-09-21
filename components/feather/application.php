@@ -14,17 +14,6 @@ class Application implements ArrayAccess {
 	private $container = array();
 
 	/**
-	 * Register a provider with the application.
-	 * 
-	 * @param  object  $provider
-	 * @return void
-	 */
-	public function register($provider)
-	{
-		$provider->register($this);
-	}
-
-	/**
 	 * Share a closure such that it is a singleton.
 	 * 
 	 * @param  Closure  $closure
