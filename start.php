@@ -68,6 +68,24 @@ $feather['config']->db();
 
 /*
 |--------------------------------------------------------------------------
+| Load Feather Components
+|--------------------------------------------------------------------------
+|
+| Load in the Feather components.
+|
+*/
+
+foreach($feather['config']->get('feather: feather.components') as $component => $closure)
+{
+	if(is_callable($closure))
+	{
+		$closure($feather);
+	}
+}
+
+
+/*
+|--------------------------------------------------------------------------
 | Load Feather Facades
 |--------------------------------------------------------------------------
 |
