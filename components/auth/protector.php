@@ -2,9 +2,6 @@
 
 class Protector {
 
-	public function something()
-	{
-		return 'rabbits';
-	}
+	
 
 }
