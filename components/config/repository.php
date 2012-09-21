@@ -1,11 +1,19 @@
 <?php namespace Feather\Components\Config;
 
+use DB;
 use Str;
 use Cache;
 use Event;
 use Config;
 
 class Repository {
+
+	/**
+	 * Dirty configuration items.
+	 * 
+	 * @var array
+	 */
+	protected $dirty = array();
 
 	/**
 	 * Bootstrap the config repository, override the Laravel event for configuration
@@ -52,13 +60,32 @@ class Repository {
 		{
 			$config = array();
 
-			foreach(Models\Config::all() as $item)
+			foreach(DB::connection(FEATHER_DATABASE)->table('config')->get() as $item)
 			{
 				array_set($config, $item->key, str_replace('(:feather)', '(:bundle)', $item->value));
 			}
 
 			return $config;
 		});
+
+		foreach($items as $key => $item)
+		{
+			array_set(Config::$items['feather']['db'], $key, $item);
+		}
+	}
+
+	/**
+	 * Reload the database configuration items.
+	 * 
+	 * @return void
+	 */
+	public function reload()
+	{
+		Cache::forget('config');
+
+		unset(Config::$items['feather']['db']);
+
+		$this->db();
 	}
 
 	/**
@@ -81,6 +108,13 @@ class Repository {
 	 */
 	public function set($key, $value)
 	{
+		// If the key does not exist and it belongs to the database configuration the item is
+		// dirty and needs to be inserted.
+		if(!$this->has($key) and starts_with($this->idenfitier($key), 'db'))
+		{
+			$this->dirty[] = substr($this->idenfitier($key), 3);
+		}
+
 		return Config::set($this->prefix($key), $value);
 	}
 
@@ -94,6 +128,105 @@ class Repository {
 	public function get($key, $default = null)
 	{
 		return Config::get($this->prefix($key), $default);
+	}
+
+	/**
+	 * Save a key, group of keys, or all configuration items to the database.
+	 * Only keys that belong to the database configuration can be saved.
+	 * 
+	 * @param  array  $keys
+	 * @return void
+	 */
+	public function save($keys = array())
+	{
+		$items = array();
+
+		if($keys)
+		{
+			// Each key must belong to the database set of configuration items to be saved
+			// back into the database.
+			foreach((array) $keys as $key)
+			{
+				if(starts_with($this->idenfitier($key), 'db'))
+				{
+					$items[substr($this->idenfitier($key), 3)] = $this->get($key);
+				}
+			}
+		}
+		else
+		{
+			$items = $this->get('feather: db');
+		}
+
+		$update = $insert = array();
+
+		foreach($items as $key => $value)
+		{
+			// Using variable variables we can assign the item to the correct array
+			// depending on whether or not the item already exists within the
+			// database.
+			$variable = in_array($key, $this->dirty) ? 'insert' : 'update';
+
+			if(is_array($value))
+			{
+				foreach($value as $key => $value)
+				{
+					${$variable}[] = compact('key', 'value');
+				}
+
+				continue;
+			}
+
+			${$variable}[] = compact('key', 'value');
+		}
+
+		// Using PDO transactions we'll spin through our array of keys to update and execute
+		// the query for each of them. If something goes wrong the transaction will be rolled
+		// back automatically.
+		if($update)
+		{
+			DB::connection(FEATHER_DATABASE)->transaction(function() use ($update)
+			{
+				foreach($update as $item)
+				{
+					DB::connection(FEATHER_DATABASE)->table('config')->where_key($item['key'])->update(array('value' => $item['value']));
+				}
+			});
+		}
+
+		// Because inserts behave differently to an update we can perform a batch insert with
+		// Fluent by providing an array of arrays. We'll use this method instead of transactions.
+		if($insert)
+		{
+			DB::connection(FEATHER_DATABASE)->table('config')->insert($insert);
+		}
+	}
+
+	/**
+	 * Delete a key or group of keys from the database.
+	 * Only keys that belong to the database configuration can be deleted.
+	 * 
+	 * @param  array  $keys
+	 * @return void
+	 */
+	public function delete($keys)
+	{
+		$delete = array();
+
+		// Each key must belong to the database set of configuration items to be deleted
+		// from the database.
+		foreach((array) $keys as $key)
+		{
+			if(starts_with($this->idenfitier($key), 'db'))
+			{
+				$delete[] = substr($this->idenfitier($key), 3);
+			}
+		}
+
+		if($delete)
+		{
+			DB::connection(FEATHER_DATABASE)->table('config')->where_in('key', $delete)->delete();
+		}
 	}
 
 	/**
@@ -129,6 +262,24 @@ class Repository {
 			default:
 				return $key;
 		}
+	}
+
+	/**
+	 * Determine the idenfitier excluding any namespacing.
+	 * 
+	 * @param  string  $key
+	 * @return string
+	 */
+	private function idenfitier($key)
+	{
+		if(!str_contains($key, '::') and !str_contains($key = $this->prefix($key), '::'))
+		{
+			return null;
+		}
+
+		list($namespace, $idenfitier) = explode('::', $key);
+
+		return $idenfitier;
 	}
 
 }
