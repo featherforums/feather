@@ -68,6 +68,20 @@ $feather['config']->db();
 
 /*
 |--------------------------------------------------------------------------
+| Load Feather Facades
+|--------------------------------------------------------------------------
+|
+| Load in the Feather facades to give components a static interface through
+| which methods can be accessed throughout the application.
+|
+*/
+
+Components\Support\Facade::application($feather);
+
+require path('feather') . 'start' . DS . 'facades' . EXT;
+
+/*
+|--------------------------------------------------------------------------
 | Register Feather Applications
 |--------------------------------------------------------------------------
 |
