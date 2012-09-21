@@ -1,0 +1,1493 @@
+body {
+	background-image: url('../img/background.png');
+	padding: 0;
+	margin: 0;
+	font-family: "Helvetica", "Helvetica Neue", Arial, sans-serif;
+	font-size: 13px;
+	color: #454545;
+	line-height: 1.45em;
+}
+
+input, button, textarea {
+	color: #454545;
+	font-family: "Helvetica", "Helvetica Neue", Arial, sans-serif;
+	font-size: 1em;
+}
+
+a {
+	color: #d7634c;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+.group:after,
+fieldset dd:after,
+.alert-floated:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+/**
+ * The container element holds all other elements and is centered on our screen.
+ */
+.container {
+	position: relative;
+	width: 1140px;
+	margin: 0 auto;
+	padding: 0;
+}
+
+/**
+ * The header contains the logo and some vital navigation for getting around the forum.
+ * Our user related data will also appear here when they are signed in.
+ */
+.header > .logo {
+	clear: right;
+	float: left;
+}
+
+/**
+ * The user section of the header is above everything and is easily to see, it's fixed.
+ */
+.header > .user {
+	float: right;
+	margin: 10px 0 30px;
+	font-size: 14px;
+}
+
+.header > .user a {
+	text-decoration: none;
+}
+
+.header > .user > ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.header > .user > ul > li {
+	float: left;
+	padding: 0 18px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	background-color: #fff;
+	margin: 0 0 0 6px;
+	position: relative;
+	line-height: 34px;
+}
+
+.header > .user > ul > li.light { background-color: #d1c9c1; }
+.header > .user > ul > li.light:hover { background-color: #d9d2cb; }
+
+.header > .user > ul > li.dark { background: rgba(0, 0, 0, 0.6); }
+.header > .user > ul > li.dark:hover { background: rgba(0, 0, 0, 0.7); }
+
+.header > .user > ul > li.attn { background: rgba(215, 99, 76, 0.8); }
+.header > .user > ul > li.attn:hover { background: rgba(215, 99, 76, 0.95); }
+
+.header > .user > ul > li.link > a {
+	display: block;
+	margin: 0 -18px;
+	padding: 0 18px;
+}
+
+.header > .user > ul > li.dark a,
+.header > .user > ul > li.attn a {
+	color: #fff;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+}
+
+/**
+ * When a menu with options is hovered we show another dropdown menu.
+ */
+.header > .user > ul > li.has-options:hover {
+	-moz-border-radius: 3px 3px 0 0;
+	-webkit-border-radius: 3px 3px 0 0;
+	border-radius: 3px 3px 0 0;
+}
+
+.header > .user > ul > li.has-options > ul {
+	display: none;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	top: 40px;
+	left: 0;
+	line-height: normal;
+	width: 350px;
+	-moz-border-radius: 0 2px 2px 2px;
+	-webkit-border-radius: 0 2px 2px 2px;
+	border-radius: 0 2px 2px 2px;
+	overflow: hidden;
+}
+
+.header > .user > ul > li.dark.has-options > ul { background: rgba(0, 0, 0, 0.7); }
+.header > .user > ul > li.attn.has-options > ul { background: rgba(215, 99, 76, 0.95); }
+
+.header > .user > ul > li.has-options:hover > ul {
+	display: block;
+}
+
+/**
+ * Place a smaller bar after the hovered option so we can shift the actual dropdown below
+ * other menu items.
+ */
+.header > .user > ul > li.has-options:hover:before {
+	content: "";
+	display: block;
+	width: 100%;
+	height: 6px;
+	position: absolute;
+	top: 34px;
+	left: 0;
+}
+
+.header > .user > ul > li.dark.has-options:hover:before { background: rgba(0, 0, 0, 0.7); }
+.header > .user > ul > li.attn.has-options:hover:before { background: rgba(215, 99, 76, 0.95); }
+
+/**
+ * Items for the dropdown menu.
+ */
+.header > .user > ul > li.has-options > ul > li {
+	float: left;
+	width: 50%;
+	padding: 4px;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.header > .user > ul > li.has-options > ul > li > a {
+	display: block;
+	padding: 6px 14px;
+	color: #fff;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+}
+
+.header > .user > ul > li.attn.has-options > ul > li > a:hover {
+	background-color: #d15843;
+}
+
+/**
+ * The header navigation is floated right and consists of nice squares, love the squares.
+ */
+.header > .navigation {
+	float: right;
+}
+
+.header > .navigation > li {
+	float: left;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+	margin: 0 0 0 3px;
+}
+
+.header > .navigation > li > a {
+	display: block;
+	color: #999;
+	text-shadow: 0 1px 0 #fff;
+	text-decoration: none;
+	font-weight: bold;
+	font-size: 14px;
+	text-transform: lowercase;
+	padding: 8px 16px;
+}
+
+.header > .navigation > li:hover {
+	background: rgba(0, 0, 0, 0.1);
+}
+
+.header > .navigation > li.important {
+	background: rgba(215, 99, 76, 0.6);
+}
+
+.header > .navigation > li.important:hover {
+	background: rgba(215, 99, 76, 0.8);
+}
+
+.header > .navigation > li.selected {
+	background: rgba(0, 0, 0, 0.25);
+}
+
+.header > .navigation > li.selected > a,
+.header > .navigation > li.important > a {
+	color: #fff;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+}
+
+/**
+ * The main body is a large container that stands out from the background.
+ */
+.body {
+	margin: 30px 0 0;
+	background-color: #fff;
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+	padding: 10px 10px 20px;
+	-moz-border-radius: 0 0 2px 2px;
+	-webkit-border-radius: 0 0 2px 2px;
+	border-radius: 0 0 2px 2px;
+}
+
+.body .content {
+	clear: both;
+}
+
+/**
+ * The breadcrumbs get nice little arrow separators.
+ */
+.breadcrumbs {
+	margin: -10px -10px 10px;
+	background-color: #f2f2f2;
+	border-bottom: 1px solid #e6e6e6;
+	text-shadow: 0 1px 0 #fff;
+	-moz-border-radius: 2px 2px 0 0;
+	-webkit-border-radius: 2px 2px 0 0;
+	border-radius: 2px 2px 0 0;
+	line-height: 40px;
+}
+
+.breadcrumbs > li,
+.breadcrumbs > li > a {
+	color: #666;
+}
+
+.breadcrumbs > li {
+	display: inline-block;
+	margin: 0 0 0 -3px;
+	cursor: default;
+}
+
+.breadcrumbs > li:first-child { margin-left: 0; }
+
+.breadcrumbs > li,
+.breadcrumbs > li > a {
+	position: relative;
+	padding: 0 4px 0 26px;
+	color: #989898;
+}
+
+.breadcrumbs > li > a {
+	display: block;
+	text-decoration: none;
+	margin: 0 -4px 0 -26px;
+}
+
+.breadcrumbs > li:first-child,
+.breadcrumbs > li:first-child > a {
+	position: relative;
+	padding: 0 4px 0 10px;
+	color: #989898;
+}
+
+.breadcrumbs > li:first-child > a {
+	margin: 0 -4px 0 -10px;
+}
+
+.breadcrumbs > li > a:hover,
+.breadcrumbs > li > a:focus {
+	color: #555;
+}
+
+.breadcrumbs > li:hover {
+	background-color: #f9f9f9;
+}
+
+.breadcrumbs > li:active {
+	border-color: #f1f1f1;
+}
+
+.breadcrumbs > li:before {
+	position: absolute;
+	display: inline-block;
+	content: "";
+	top: -1px;
+	right: -20px;
+	border-top: 21px solid rgba(255, 255, 255, 0);
+	border-bottom: 21px solid rgba(255, 255, 255, 0);
+	border-left: 19px solid #e2e2e2;
+	z-index: 1;
+}
+
+.breadcrumbs > li:hover:before,
+.breadcrumbs > li:focus:before {
+	border-left-color: #d7d7d7;
+}
+
+.breadcrumbs > li:after {
+	position: absolute;
+	display: inline-block;
+	content: "";
+	top: -1px;
+	right: -18px;
+	border-top: 21px solid rgba(255, 255, 255, 0);
+	border-bottom: 21px solid rgba(255, 255, 255, 0);
+	border-left: 19px solid #f2f2f2;
+	z-index: 1;
+}
+
+.breadcrumbs > li:hover:after {
+	border-left-color: #f9f9f9;
+}
+
+.breadcrumbs > li:hover { text-decoration: none; }
+
+/**
+ * Headings appear throughout the body and are a different font and weight
+ * then other items.
+ */
+.body h1,
+.body h2,
+.body h3 {
+	margin: 0 0 16px;
+	font-family: "Trebuchet MS", "Ubuntu", serif;
+	font-size: 24px;
+	color: #999;
+	text-transform: uppercase;
+}
+
+.body h2 { font-size: 20px; }
+.body h3 { font-size: 18px; }
+
+.body h1 a,
+.body h2 a {
+	text-decoration: none;
+}
+
+.body p:first-child { margin-top: 0; }
+.body p:last-child { margin-bottom: 0; }
+
+/**
+ * Body halves allow the page to be split in two equal halves.
+ */
+.halves > .half-left {
+	float: left;
+	width: 49%;
+}
+
+.halves > .half-right {
+	margin: 0 0 0 51%;
+}
+
+/**
+ * The footer simply appears under the body and nothing more.
+ */
+.footer {
+	font-size: 11px;
+	padding: 10px 0;
+	color: #999;
+}
+
+.footer > .powered {
+	float: left;
+	margin: 0;
+}
+
+.footer > .stats {
+	float: right;
+}
+
+.footer > .stats > li {
+	float: left;
+	margin: 0 0 0 24px;
+}
+
+.footer > .stats .unit {
+	display: inline-block;
+	background-color: #999;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	color: #fff;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+	padding: 1px 4px;
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+	font-weight: bold;
+	margin: 0 4px 0 0;
+}
+
+/**
+ * A loading div that can be placed just about anywhere.
+ */
+.loading {
+	background: url('../img/loading.gif') no-repeat;
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+}
+
+/**
+ * The place description style. Shown when viewing a single place.
+ */
+.place-description {
+	margin: 0 0 16px;
+	padding: 4px 10px;
+	background-color: #f1f1f1;
+	border: 1px solid #eaeaea;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	display: inline-block;
+	color: #888;
+}
+
+/**
+ * Styles for showing all discussions within places. This is used on the main page and when viewing
+ * a single place.
+ */
+.discussions > li {
+	display: block;
+	padding: 16px 0;
+	border-top: 1px solid #EAEAEA;
+	letter-spacing: -4px;
+	word-spacing: -4px;
+}
+
+.discussions > li.place {
+	border-top: 0;
+}
+
+.discussions > li.place + li {
+	margin-top: 0;
+	border-top: 1px solid #f4f4f4;
+}
+
+.discussions > li.discussion > div {
+	display: inline-block;
+	line-height: 1.7em;
+	word-spacing: normal;
+	vertical-align: middle;
+	letter-spacing: normal;
+	*display: inline;
+	zoom: 1;
+}
+
+.discussions > li.place,
+.discussions > li.empty,
+.discussions > li.extra {
+	position: relative;
+	letter-spacing: normal;
+	word-spacing: normal;
+}
+
+.discussions > li.place,
+.discussions > li.extra,
+.discussions > li.empty {
+	border-top: 0;
+}
+
+.discussions > li.place,
+.discussions > li.extra,
+.discussions > li.empty {
+	padding: 0;
+}
+
+.discussions > li.place + li.empty {
+	border-top: 0;
+	margin: 0 0 30px;
+}
+
+.discussions > li h1,
+.discussions > li h2,
+.discussions > li h3 {
+	margin: 0 0 16px;
+}
+
+.place h1 a { color: #494949; }
+
+/**
+ * The see more discussions link for each place.
+ */
+.discussions > li.more {
+	text-align: right;
+	padding: 16px 0 30px;
+	border: 0;
+	letter-spacing: normal;
+	word-spacing: normal;
+	width: 21%;
+}
+
+.discussions > li.more span {
+	position: relative;
+	font-size: 14px;
+	top: -1px;
+}
+
+/**
+ * A total discussions nested within place counter is shown next to each place title.
+ */
+.discussion-counter {
+	position: relative;
+	top: -1px;
+	cursor: default;
+	font-size: 10px;
+	display: inline-block;
+	margin: 0 2px 0 18px;
+	background-color: #777;
+	color: #fff;
+	-moz-border-radius: 12px;
+	-webkit-border-radius: 12px;
+	border-radius: 12px;
+	padding: 0 5px;
+	line-height: 16px;
+	vertical-align: middle;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+}
+
+h1 > .discussion-counter {
+	top: -2px;
+	font-family: "Helvetica", "Helvetica Neue", Arial, sans-serif;
+	margin-left: 9px;
+}
+
+/**
+ * We show the places children to a specified depth only in a nice dropdown, similar to the user bar.
+ */
+.children {
+	margin: 0 0 16px;
+}
+
+.children li {
+	position: relative;
+}
+
+.children > li {
+	display: inline-block;
+	font-size: 13px;
+	color: #777;
+	margin: 0 6px 0 0;
+	padding: 0 8px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	background-color: #F1F1F1;
+	line-height: 25px;
+}
+
+.children > li a {
+	color: #777;
+	text-decoration: none;
+}
+
+.children > li a:hover { color: #444; }
+
+.children > li.parent-child ul li .discussion-counter {
+	position: absolute;
+	right: 0;
+	top: 5px;
+}
+
+.children li:hover .discussion-counter {
+	background-color: #fff;
+	color: #d7634c;
+}
+
+.children > li:hover {
+	background: rgba(215, 99, 76, 0.95);
+}
+
+.children > li.parent-child:hover {
+	-moz-border-radius: 2px 2px 0 0;
+	-webkit-border-radius: 2px 2px 0 0;
+	border-radius: 2px 2px 0 0;
+}
+
+/**
+ * This is a spacer that we put between the place and the dropdown itself. So we
+ * can space the dropdown a bit.
+ */
+.children > li.parent-child:hover:before {
+	content: "";
+	display: block;
+	width: 100%;
+	height: 4px;
+	background: rgba(215, 99, 76, 0.95);
+	position: absolute;
+	top: 25px;
+	left: 0;
+}
+
+.children > li:hover > a:hover { text-decoration: none; }
+
+/**
+ * Those that have a dropdown arrow show it first as gray then as white.
+ */
+.children > li > .dropdown-arrow {
+	display: inline-block;
+	width: 7px;
+	height: 4px;
+	background: url('../img/sprites.png') no-repeat 0 -48px;
+	vertical-align: middle;
+	margin: -1px 0 0 1px;
+}
+
+.children > li.parent-child:hover > .dropdown-arrow { background-position: -7px -48px; }
+
+/**
+ * When a child place is hovered show the dropdown.
+ */
+.children > li.parent-child:hover > ul {
+	display: block;
+}
+
+.children > li:hover li,
+.children > li:hover a {
+	color: #fff;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+}
+
+.children > li > ul a {
+	display: inline-block;
+	padding: 0 8px;
+	margin: 0 70px 0 0;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+}
+
+.children > li > ul a:hover {
+	background-color: #d15843;
+	text-decoration: none;
+}
+
+.children > li > ul {
+	display: none;
+	list-style-type: none;
+	position: absolute;
+	z-index: 2;
+	top: 29px;
+	left: 0;
+	margin: 0;
+	padding: 0;
+	background: rgba(215, 99, 76, 0.95);
+	min-width: 200px;
+	max-width: 500px;
+	white-space: nowrap;
+	-moz-border-radius: 0 2px 2px 2px;
+	-webkit-border-radius: 0 2px 2px 2px;
+	border-radius: 0 2px 2px 2px;
+	padding: 4px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.children > li > ul li {
+	line-height: 24px;
+}
+
+.children > li > ul li ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0 0 0 20px;
+}
+
+/**
+ * Showing a discussions information within a place listing.
+ */
+.discussions > li.discussion > .place {
+	width: 21%;
+	text-align: right;
+}
+
+.discussions > li.discussion > .meta {
+	margin: 0 0 0 2%;
+	position: relative;
+	width: 55%;
+}
+
+.discussions > li.discussion > .meta > .title {
+	font-size: 16px;
+}
+
+.discussions > li.discussion > .meta > .title:after {
+	content: "";
+	display: block;
+}
+
+.discussions > li.discussion > .meta > p {
+	color: #777;
+	margin: 0 12px 0 0;
+}
+
+.discussions > li.discussion > .meta > p a {
+	color: #444;
+	text-decoration: none;
+}
+
+.discussions > li.discussion > .meta > span + a { margin: 0 0 0 4px; }
+
+/**
+ * When a user is signed in the discussions options appear when they hover
+ * over a discussion.
+ */
+.discussions > li.discussion > .meta .options {
+	position: absolute;
+	top: 50%;
+	right: 25px;
+	margin: -8px 0 0 18px;
+}
+
+.discussions > li.discussion > .meta .options a {
+	display: none;
+	background: url('../img/sprites.png') no-repeat -16px -48px;
+	width: 16px;
+	height: 16px;
+	margin: 0 8px 0 0;
+	vertical-align: text-top;
+}
+
+.discussions > li.discussion > .meta .options a.watch:hover { background-position: -16px -64px; }
+
+.discussions > li.discussion > .meta .options a.watch.watching {
+	display: inline-block;
+	background-position: -16px -80px;
+}
+
+.discussions > li.discussion > .meta .options a.tools { background-position: -32px -48px; }
+.discussions > li.discussion > .meta .options a.tools:hover { background-position: -32px -64px; }
+
+.discussions > li.discussion:hover > .meta .options a { display: inline-block; }
+
+/**
+ * The statistics consists of 3 boxes of equal width with a light gray coloring.
+ */
+.discussions > li.discussion > .stats {
+	text-align: right;
+	width: 22%;
+	word-spacing: -4px;
+	letter-spacing: -4px;
+}
+
+.discussions > li.discussion > .stats > div {
+	width: 33%;
+	background-color: #f6f6f6;
+	display: inline-block;
+	padding: 2px 0 5px;
+	word-spacing: normal;
+	letter-spacing: normal;
+}
+
+.discussions > li.discussion > .stats > div > span {
+	display: block;
+	text-align: center;
+	font-size: 10px;
+	text-transform: uppercase;
+	color: #777;
+}
+
+.discussions > li.discussion > .stats > div > span.number {
+	font-size: 22px;
+}
+
+/**
+ * When selecting users who can participate in a discussion.
+ */
+.discussion-participants input {
+	min-width: 40%;
+}
+
+.participants {
+	min-height: 35px;
+	margin: 8px 0 0;
+}
+
+.participants > img {
+	width: 30px;
+	height: 30px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	margin: 0 3px 0 0;
+	cursor: pointer;
+}
+
+.participants > span {
+	margin: 0 0 14px;
+}
+
+/**
+ * Start discussion textbox.
+ */
+.discussion-textarea {
+	margin: 24px 0 0;
+}
+
+.discussion-textarea textarea {
+	width: 100%;
+	height: 400px;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+/**
+ * Forms and form related stylings.
+ */
+fieldset {
+	border: 0;
+	padding: 0;
+	margin: 30px 0 0;
+}
+
+fieldset:first-child {
+	margin: 0;
+}
+
+fieldset dl {
+	margin: 0;
+	line-height: 1.4em;
+}
+
+fieldset dl dt {
+	float: left;
+	width: 30%;
+	text-align: right;
+	margin: 5px 0 12px 0;
+}
+
+fieldset dl dt label {
+	font-weight: bold;
+	font-size: 14px;
+}
+
+fieldset dl dd {
+	margin: 0 0 12px 33%;
+}
+
+fieldset dl dd:last-child {
+	margin-bottom: 0;
+}
+
+fieldset dl dd .description {
+	display: block;
+	margin: 6px 0 0;
+	color: #999;
+	font-size: 12px;
+	line-height: 1.5em;
+}
+
+input,
+textarea,
+select {
+	background-color: #fff;
+	border: 1px solid #dcdcdc;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+	padding: 6px 8px;
+	-webkit-transition: box-shadow 0.1s ease-in-out 0s;
+	-moz-transition: box-shadow 0.1s ease-in-out 0s;
+	-o-transition: box-shadow 0.1s ease-in-out 0s;
+	transition: box-shadow 0.1s ease-in-out 0s;
+	min-width: 60%;
+	resize: none;
+	font-family: "Helvetica", "Helvetica Neue", Arial, sans-serif;
+	font-size: 100%;
+}
+
+select,
+input[type=radio],
+input[type=checkbox] {
+	min-width: 0;
+}
+
+input[type=radio],
+input[type=checkbox] {
+	vertical-align: middle;
+	margin: -3px 0 0;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+	box-shadow: 0 0 4px #d7d7d7;
+}
+
+input::-webkit-input-placeholder {
+	color: #bbb !important;
+}
+
+input:-moz-placeholder {
+	color: #bbb !important;
+}
+
+input[type="submit"] {
+	min-width: inherit;
+}
+
+button::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner,
+input[type="submit"]::-moz-focus-inner,
+input[type="reset"]::-moz-focus-inner {     
+	padding: 0 !important;
+	border: 0 none !important;
+} 
+
+.error input,
+.error textarea {
+	border-color: #fab1b1;
+	box-shadow: 0 0 4px #fab1b1;
+}
+
+.label.error-inline {
+	margin: 6px 0 0;
+}
+
+.error-spacer {
+	display: block;
+}
+
+select optgroup {
+	text-align: center;
+}
+
+fieldset .decider {
+	overflow: hidden;
+}
+
+fieldset .decider span {
+	float: left;
+	padding: 5px 12px 4px;
+	border-width: 1px;
+	border-style: solid;
+	text-transform: uppercase;
+	font-size: 12px;
+	font-weight: bold;
+	text-shadow: 0 1px 0 #fff;
+}
+
+fieldset .decider input {
+	margin-right: 4px;
+}
+
+fieldset .decider .yes {
+	background-color: #DFF0D8;
+    border-color: #bed9a8;
+    color: #468847;
+    border-right: 0;
+    -moz-border-radius: 2px 0 0 2px;
+    -webkit-border-radius: 2px 0 0 2px;
+    border-radius: 2px 0 0 2px;
+}
+
+fieldset .decider .no {
+    background-color: #FCE9E9;
+    border-color: #fab1b1;
+    color: #B94A48;
+    border-left: 0;
+    -moz-border-radius: 0 2px 2px 0;
+    -webkit-border-radius: 0 2px 2px 0;
+    border-radius: 0 2px 2px 0;
+}
+
+/**
+ * User Authorization styles, for Twitter, Facebook, Google, and OpenID.
+ */
+.authorization-links > a {
+	background: url('../img/sprites.png') no-repeat 0 0;
+	width: 32px;
+	height: 32px;
+	display: inline-block;
+	margin: 0 6px 0 0;
+}
+
+.authorization-links > a.google { background-position: -32px 0; }
+.authorization-links > a.facebook { background-position: -64px 0; }
+.authorization-links > a.twitter { background-position: -96px 0; }
+
+/**
+ * Buttons are styled by applying the btn and a btn type to an element.
+ */
+.btn {
+	display: inline-block;
+	line-height: normal;
+	padding: 12px 14px 13px;
+	background: #fafafa;
+	background: -moz-linear-gradient(top,  #fafafa 0%, #ececec 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fafafa), color-stop(100%,#ececec));
+	background: -webkit-linear-gradient(top,  #fafafa 0%,#ececec 100%);
+	background: -o-linear-gradient(top,  #fafafa 0%,#ececec 100%);
+	background: -ms-linear-gradient(top,  #fafafa 0%,#ececec 100%);
+	background: linear-gradient(top,  #fafafa 0%,#ececec 100%);
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	border: 1px solid #dadada;
+	border-bottom-color: #c5c5c5;
+	box-shadow: inset 0 1px 0 #fff;
+	text-shadow: 0 1px 0 #fff;
+	color: #666;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.btn:active {
+	box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+.btn:hover {
+	background: #f1f1f1;
+}
+
+.btn.btn-big {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.btn.btn-small {
+	font-size: 11px;
+}
+
+.btn.btn-fat {
+	padding: 12px 18px 13px;
+}
+
+/**
+ * Primary Button
+ */
+.btn.btn-primary {
+	color: #fff !important;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+	background: #d8724b;
+	background: -moz-linear-gradient(top,  #d8724b 0%, #d7614d 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d8724b), color-stop(100%,#d7614d));
+	background: -webkit-linear-gradient(top,  #d8724b 0%,#d7614d 100%);
+	background: -o-linear-gradient(top,  #d8724b 0%,#d7614d 100%);
+	background: -ms-linear-gradient(top,  #d8724b 0%,#d7614d 100%);
+	background: linear-gradient(top,  #d8724b 0%,#d7614d 100%);
+	border-color: #cf5a47;
+	border-bottom-color: #c3432d;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn.btn-primary:hover {
+	background: #d56e47;
+}
+
+/**
+ * Info Button
+ */
+.btn.btn-info {
+	color: #fff !important;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+	background: #65afe3;
+	background: -moz-linear-gradient(top,  #65afe3 0%, #469ad5 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#65afe3), color-stop(100%,#469ad5));
+	background: -webkit-linear-gradient(top,  #65afe3 0%,#469ad5 100%);
+	background: -o-linear-gradient(top,  #65afe3 0%,#469ad5 100%);
+	background: -ms-linear-gradient(top,  #65afe3 0%,#469ad5 100%);
+	background: linear-gradient(top,  #65afe3 0%,#469ad5 100%);
+	border-color: #3e92cd;
+	border-bottom-color: #1a72b1;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn.btn-info:hover {
+	background: #56a2d7;
+}
+
+/**
+ * Success Button
+ */
+.btn.btn-success {
+	color: #fff !important;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+	background: #80b65d;
+	background: -moz-linear-gradient(top,  #80b65d 0%, #6ca843 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#80b65d), color-stop(100%,#6ca843));
+	background: -webkit-linear-gradient(top,  #80b65d 0%,#6ca843 100%);
+	background: -o-linear-gradient(top,  #80b65d 0%,#6ca843 100%);
+	background: -ms-linear-gradient(top,  #80b65d 0%,#6ca843 100%);
+	background: linear-gradient(top,  #80b65d 0%,#6ca843 100%);
+	border-color: #639f3b;
+	border-bottom-color: #569829;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn.btn-success:hover {
+	background: #7ab254;
+}
+
+/**
+ * Warning Button
+ */
+.btn.btn-warning {
+	color: #fff !important;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+	background: #dda24f;
+	background: -moz-linear-gradient(top,  #dda24f 0%, #ce8927 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dda24f), color-stop(100%,#ce8927));
+	background: -webkit-linear-gradient(top,  #dda24f 0%,#ce8927 100%);
+	background: -o-linear-gradient(top,  #dda24f 0%,#ce8927 100%);
+	background: -ms-linear-gradient(top,  #dda24f 0%,#ce8927 100%);
+	background: linear-gradient(top,  #dda24f 0%,#ce8927 100%);
+	border-color: #c7811d;
+	border-bottom-color: #bc730a;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn.btn-warning:hover {
+	background: #d89b44;
+}
+
+/**
+ * Danger Button
+ */
+.btn.btn-danger {
+	color: #fff;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+	background: #cc493f;
+	background: -moz-linear-gradient(top,  #cc493f 0%, #c43025 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cc493f), color-stop(100%,#c43025));
+	background: -webkit-linear-gradient(top,  #cc493f 0%,#c43025 100%);
+	background: -o-linear-gradient(top,  #cc493f 0%,#c43025 100%);
+	background: -ms-linear-gradient(top,  #cc493f 0%,#c43025 100%);
+	background: linear-gradient(top,  #cc493f 0%,#c43025 100%);
+	border-color: #c2291e;
+	border-bottom-color: #bc1509;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn.btn-danger:hover {
+	background: #c84338;
+}
+
+/**
+ * Inverse Button
+ */
+.btn.btn-inverse {
+	color: #fff;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+	background: #595959;
+	background: -moz-linear-gradient(top,  #595959 0%, #434343 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#595959), color-stop(100%,#434343));
+	background: -webkit-linear-gradient(top,  #595959 0%,#434343 100%);
+	background: -o-linear-gradient(top,  #595959 0%,#434343 100%);
+	background: -ms-linear-gradient(top,  #595959 0%,#434343 100%);
+	background: linear-gradient(top,  #595959 0%,#434343 100%);
+	border-color: #3e3e3e;
+	border-bottom-color: #313131;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn.btn-inverse:hover {
+	background: #515151;
+}
+
+/**
+ * Soft Button
+ * This button is slightly different, it's smaller and barely got a background gradient.
+ */
+.btn-soft {
+	padding: 6px 10px;
+	color: #999;
+	text-shadow: none;
+	background: #fff;
+	border-color: #ededed;
+	border-bottom-color: #d9d9d9;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07);
+}
+
+.btn.btn-soft:hover {
+	background: #fff;
+	border-color: #e0e0e0;
+	border-bottom-color: #cfcfcf;
+	color: #666;
+}
+
+.btn.btn-soft:active {
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07) !important;
+	border-color: #f3f3f3;
+	border-bottom-color: #e1e1e1;
+}
+
+/**
+ * Inline labels, different colors for different labels.
+ */
+.label {
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+    padding: 2px 8px 3px;
+    background-color: #bbb;
+    color: #FFFFFF;
+    font-size: 11px;
+    line-height: 14px;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+    vertical-align: text-top;
+    position: relative;
+    top: -1px;
+    white-space: nowrap;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.label.label-success {
+	background-color: #1f9a31;
+}
+
+.label.label-important {
+	background-color: #dd5956;
+}
+
+.label.label-info {
+	background-color: #2895ca;
+}
+
+.label.label-bright {
+	background-color: #e58749;
+}
+
+.label.label-private {
+	background-color: #dd5956;
+}
+
+.label.label-draft {
+	background-color: #4e4744;
+}
+
+.label.label-inverse {
+	background-color: #4e4744;
+}
+
+/**
+ * Alert boxes, different colors for different types of alerts.
+ */
+.alert {
+    background-color: #FCF8E3;
+    border: 1px solid #FBEED5;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    color: #C09853;
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.alert.alert-floated {
+	float: left;
+}
+
+.alert:last-child { margin: 0; }
+
+.alert.alert-light {
+    background-color: #e7e7e7;
+    border-color: #d8d8d8;
+    color: #5b5b5b;
+}
+
+.alert.alert-error {
+    background-color: #FCE9E9;
+    border-color: #fab1b1;
+    color: #B94A48;
+}
+
+.alert.alert-success {
+	background-color: #DFF0D8;
+    border-color: #D6E9C6;
+    color: #468847;
+}
+
+.alert.alert-info {
+	background-color: #D9EDF7;
+    border-color: #BCE8F1;
+    color: #3A87AD;
+}
+
+.alert ol {
+	list-style-type: decimal;
+	margin: 8px 0 0 0;
+	padding: 0 0 0 40px;
+}
+
+/**
+ * By default lists have no style type or margins/paddings.
+ */
+ul, ol {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+/**
+ * Some text alignments.
+ */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+/**
+ * Tooltip Styles
+ */
+.tooltip-container {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	line-height: normal !important;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	background-color: #222;
+	background: rgba(0, 0, 0, 0.85);
+	z-index: 99;
+}
+
+.tooltip-container .tooltip-wrapper {
+	position: relative;
+}
+
+.tooltip-container .tooltip-arrow {
+	position: absolute;
+	border-width: 5px;
+	border-style: solid;
+}
+
+.tooltip-container.arrow-b .tooltip-arrow {
+	top: -10px;
+	left: 50%;
+	margin-left: -5px;
+	border-color: transparent transparent #222 transparent;
+	border-color: transparent transparent rgba(0, 0, 0, 0.85) transparent;
+}
+
+.tooltip-container.arrow-t .tooltip-arrow {
+	bottom: -10px;
+	left: 50%;
+	margin-left: -5px;
+	border-color: #222 transparent transparent transparent;
+	border-color: rgba(0, 0, 0, 0.85) transparent transparent transparent;
+}
+
+.tooltip-container.arrow-l .tooltip-arrow {
+	top: 50%;
+	right: -10px;
+	margin-top: -5px;
+	border-color: transparent transparent transparent #222;
+	border-color: transparent transparent transparent rgba(0, 0, 0, 0.85);
+}
+
+.tooltip-container.arrow-r .tooltip-arrow {
+	top: 50%;
+	left: -10px;
+	margin-top: -5px;
+	border-color: transparent #222 transparent transparent;
+	border-color: transparent rgba(0, 0, 0, 0.85) transparent transparent;
+}
+
+.tooltip-container .tooltip-content {
+	color: #fff;
+	text-shadow: 0 1px 0 #000;
+	padding: 8px 16px;
+	font-size: 12px;
+}
+
+/**
+ * The box modal is a nice popup box that appears over the page.
+ */
+#lean-overlay {
+	position: fixed;
+	z-index:100;
+	top: 0px;
+	left: 0px;
+	height:100%;
+	width:100%;
+	background: #000;
+	display: none;
+}
+
+#box-modal {
+	display: none;
+	max-width: 700px;
+	max-height: 500px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	background-color: #fff;
+	box-shadow: 0 0 6px #222;
+}
+
+#box-modal #box-content {
+	padding: 25px;
+}
+
+#box-modal #box-content h2 {
+	margin: -25px -25px 25px;
+	padding: 25px 25px 28px;
+	-moz-border-radius: 6px 6px 0 0;
+	-webkit-border-radius: 6px 6px 0 0;
+	border-radius: 6px 6px 0 0;
+	background-color: #f9f9f9;
+	border-bottom: 1px solid #f1f1f1;
+	color: #666;
+	font-weight: normal;
+}
+
+/**
+ * The autocomplete container is positioned after an input box.
+ */
+.autocomplete {
+	position: relative;
+}
+
+.autocomplete .ui-autocomplete {
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	width: 300px;
+	list-style-type: none;
+	border: 1px solid #dcdcdc;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+	background-color: #fff;
+	color: #fff;
+	text-shadow: 0 1px 0 #fff;
+	padding: 0;
+	margin: 14px 0 0;
+}
+
+.autocomplete .ui-autocomplete:after {
+	display: block;
+	position: absolute;
+	content: "";
+	top: -8px;
+	left: 25px;
+	border-left: 8px solid rgba(255, 255, 255, 0);
+	border-right: 8px solid rgba(255, 255, 255, 0);
+	border-bottom: 8px solid #fff;
+}
+
+.autocomplete .ui-autocomplete:before {
+	display: block;
+	position: absolute;
+	content: "";
+	top: -11px;
+	left: 23px;
+	border-left: 10px solid rgba(255, 255, 255, 0);
+	border-right: 10px solid rgba(255, 255, 255, 0);
+	border-bottom: 10px solid #dcdcdc;
+}
+
+.autocomplete .ui-autocomplete > li { margin: 0 0 6px; }
+
+.autocomplete .ui-autocomplete > li > a {
+	display: block;
+	padding: 6px;
+}
+
+.autocomplete .ui-autocomplete > li:last-child { margin-bottom: 0; }
+
+.autocomplete .ui-autocomplete > li > a:hover,
+.autocomplete .ui-autocomplete > li > a.ui-state-hover { background-color: #e3e3e3; }
