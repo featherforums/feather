@@ -42,6 +42,46 @@ class ConfigTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->getItems(), $config->get('test'));
 	}
 
+	public function testCheckItemExistance()
+	{
+		$config = $this->getRepository();
+
+		$config->set('foo', 'bar');
+		$this->assertTrue($config->has('foo'));
+
+		$this->assertTrue(!$config->has('apple'));
+	}
+
+	public function testItemsCanBeSaved()
+	{
+		$config = $this->getRepository();
+
+		$config->set('feather: db.test', 'foobar');
+		$config->save('feather: db.test');
+
+		$config->reload();
+
+		$this->assertEquals('foobar', $config->get('feather: db.test'));
+
+		$config->delete('feather: db.test');
+	}
+
+	public function testItemsCanBeDeleted()
+	{
+		$config = $this->getRepository();
+
+		$config->set('feather: db.test', 'foobar');
+		$config->save('feather: db.test');
+
+		$config->reload();
+
+		$config->delete('feather: db.test');
+
+		$config->reload();
+
+		$this->assertEquals(null, $config->get('feather: db.test'));
+	}
+
 	private function getRepository()
 	{
 		$config = new Feather\Components\Config\Repository;
