@@ -1,6 +1,7 @@
 <?php namespace Feather;
 
-use Laravel\Bundle;
+use Bundle;
+use Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,9 +60,11 @@ $feather['config'] = $feather->share(function()
 	return new Components\Config\Repository;
 });
 
-$feather['config']->set('laravel: database.connections.feather', $feather['config']->get('feather: database'));
+define('FEATHER_DATABASE', 'feather');
 
-//$feather['config']->db();
+$feather['config']->set('laravel: database.connections.' . FEATHER_DATABASE, $feather['config']->get('feather: database'));
+
+$feather['config']->db();
 
 /*
 |--------------------------------------------------------------------------
@@ -73,4 +76,3 @@ $feather['config']->set('laravel: database.connections.feather', $feather['confi
 | with the Laravel bundle manager.
 |
 */
-
