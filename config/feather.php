@@ -42,7 +42,15 @@ return array(
 	|
 	*/
 
-	'components' => array(),
+	'components' => array(
+		'auth' => function($feather)
+		{
+			$feather['auth'] = $feather->share(function($feather)
+			{
+				return new Feather\Components\Auth\Protector;
+			});
+		}
+	),
 
 	/*
 	|--------------------------------------------------------------------------
