@@ -17,6 +17,34 @@ abstract class Driver {
 	public static $extenders = array();
 
 	/**
+	 * The drivers database connection.
+	 * 
+	 * @var Laravel\Database\Connection
+	 */
+	protected $connection;
+
+	/**
+	 * The feather instance.
+	 * 
+	 * @var Feather\Components\Foundation\Application
+	 */
+	protected $feather;
+
+	/**
+	 * Creates a new migration driver instance.
+	 * 
+	 * @param  Laravel\Database\Connection                $connection
+	 * @param  Feather\Components\Foundation\Application  $feather
+	 * @return void
+	 */
+	public function __construct(\Laravel\Database\Connection $connection, \Feather\Components\Foundation\Application $feather)
+	{
+		$this->connection = $connection;
+
+		$this->feather = $feather;
+	}
+
+	/**
 	 * Loads a migration driver.
 	 * 
 	 * @param  Feather\Components\Foundation\Application  $feather
@@ -68,5 +96,23 @@ abstract class Driver {
 	{
 		static::$extenders[$driver] = $resolver;
 	}
+
+	/**
+	 * Return the database connection for method chaining.
+	 * 
+	 * @return  Laravel\Database\Connection
+	 */
+	public function db()
+	{
+		return $this->connection;
+	}
+
+	/**
+	 * Attempt to log a user in on the system.
+	 * 
+	 * @param  array  $credentials
+	 * @return bool|object
+	 */
+	abstract public function login($credentials);
 
 }
