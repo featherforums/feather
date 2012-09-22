@@ -153,11 +153,11 @@ class Date extends Component {
 	{
 		$difference = time() - $this->date->getTimestamp();
 
-		$offset = array_search($stop, static::$fuzzy['periods']) + 1;
+		$offset = array_search($stop, $this->fuzzy['periods']) + 1;
 
-		$periods = array_slice(static::$fuzzy['periods'], 0, $offset);
+		$periods = array_slice($this->fuzzy['periods'], 0, $offset);
 
-		$lengths = array_slice(static::$fuzzy['lengths'], 0, $offset);
+		$lengths = array_slice($this->fuzzy['lengths'], 0, $offset);
 		
 		for($i = 0; $difference >= $lengths[$i] and $i < count($lengths) - 1; $i++)
 		{
