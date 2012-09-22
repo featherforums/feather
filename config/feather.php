@@ -31,6 +31,20 @@ return array(
 		'driver'   => 'mysql'
 	),
 
+	/*
+	|--------------------------------------------------------------------------
+	| Feather Applications
+	|--------------------------------------------------------------------------
+	|
+	| Applications to be registered at runtime with Feather. It is advised you
+	| do not edit anything down there.
+	|
+	*/
+
+	'applications' => array(
+		'admin' => '(:feather)/admin',
+		'core' 	=> '(:feather)'
+	),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -71,21 +85,19 @@ return array(
 				return new Feather\Components\Foundation\Redirector(null);
 			});
 		},
+		'crumbs' => function($feather)
+		{
+			$feather['crumbs'] = $feather->share(function($feather)
+			{
+				return new Feather\Components\Support\Crumbs($feather);
+			});
+		},
+		'validator' => function($feather)
+		{
+			$feather['validator'] = $feather->share(function($feather)
+			{
+				return new Feather\Components\Support\Validation($feather);
+			});
+		}
 	),
-
-	/*
-	|--------------------------------------------------------------------------
-	| Feather Applications
-	|--------------------------------------------------------------------------
-	|
-	| Applications to be registered at runtime with Feather. It is advised you
-	| do not edit anything down there.
-	|
-	*/
-
-	'applications' => array(
-		'admin' => '(:feather)/admin',
-		'core' 	=> '(:feather)'
-	),
-
 );
