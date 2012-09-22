@@ -2,6 +2,7 @@
 
 use Bundle;
 use Request;
+use Autoloader;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +32,9 @@ set_path('themes', path('feather') . 'themes' . DS);
 |
 */
 
-require path('feather') . 'start' . DS . 'autoloading' . EXT;
+Autoloader::namespaces(array(
+	'Feather' => path('feather')
+));
 
 /*
 |--------------------------------------------------------------------------
@@ -96,7 +99,7 @@ foreach($feather['config']->get('feather: feather.components') as $component => 
 
 Components\Support\Facade::application($feather);
 
-require path('feather') . 'start' . DS . 'facades' . EXT;
+require path('feather') . 'facades' . EXT;
 
 /*
 |--------------------------------------------------------------------------
