@@ -76,3 +76,14 @@ class Validator extends Components\Support\Facade {
 	protected static function accessor(){ return 'validator'; }
 
 }
+
+class Date extends Components\Support\Facade {
+
+	/**
+	 * Gets the name of the facade component.
+	 * 
+	 * @return string
+	 */
+	protected static function accessor(){ return 'date'; }
+
+}

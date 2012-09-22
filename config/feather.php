@@ -98,6 +98,13 @@ return array(
 			{
 				return new Feather\Components\Support\Validation($feather);
 			});
+		},
+		'date' => function($feather)
+		{
+			$feather['date'] = $feather->share(function($feather)
+			{
+				return new Feather\Components\Support\Date($feather);
+			});
 		}
 	),
 );
