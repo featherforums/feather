@@ -2,6 +2,6 @@
 
 use Feather\Components\Foundation\Component;
 
-class Authorizer extends Component {
+class Dispatcher extends Component {
 
 }
