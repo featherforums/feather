@@ -11,14 +11,14 @@ class Manager {
 	 * 
 	 * @var array
 	 */
-	protected $gears = array();
+	public $gears = array();
 
 	/**
 	 * Started Gears.
 	 * 
 	 * @var array
 	 */
-	protected $started = array();
+	public $started = array();
 
 	/**
 	 * Register a Gear with the manager.
@@ -31,9 +31,18 @@ class Manager {
 		if(!$gear instanceof Gear)
 		{
 			throw new InvalidArgumentException('Supplied Gear is a not supported type.');
-		}		
+		}
 
-		if(file_exists($path = path('gears') . $gear->location))
+		if(starts_with($gear->location, 'path: '))
+		{
+			$path = substr($gear->location, 6);
+		}
+		else
+		{
+			$path = path('gears') . $gear->location;
+		}
+
+		if(file_exists($path))
 		{
 			$this->gears[$gear->identifier] = $gear;
 
@@ -80,7 +89,16 @@ class Manager {
 		// Spin through all the files within the gears directory and those that have
 		// the .gear.php suffix we'll require and hopefully be able to instantiate
 		// a new object.
-		foreach(new FilesystemIterator(path('gears') . $this->gears[$gear]->location) as $file)
+		if(starts_with($this->gears[$gear]->location, 'path: '))
+		{
+			$path = substr($this->gears[$gear]->location, 6);
+		}
+		else
+		{
+			$path = path('gears') . $this->gears[$gear]->location;
+		}
+
+		foreach(new FilesystemIterator($path) as $file)
 		{
 			if(ends_with($file->getFilename(), '.gear.php'))
 			{
