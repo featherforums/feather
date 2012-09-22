@@ -1,7 +1,5 @@
 <?php
 
-use Mockery as M;
-
 class AuthTest extends PHPUnit_Framework_TestCase {
 
 	public $feather;
@@ -11,11 +9,6 @@ class AuthTest extends PHPUnit_Framework_TestCase {
 		$this->feather = Feather\Components\Support\Facade::application();
 
 		$this->feather['auth']->user = $this->user();
-	}
-
-	public function tearDown()
-	{
-		M::close();
 	}
 
 	public function testCanDoAction()
