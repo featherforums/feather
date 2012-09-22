@@ -140,6 +140,4 @@ if(Request::cli())
 	require 'Hamcrest/Hamcrest.php';
 
 	with(new \Mockery\Loader)->register();
-
-	var_dump('here');
 }
