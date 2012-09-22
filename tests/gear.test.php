@@ -29,9 +29,9 @@ class GearTest extends PHPUnit_Framework_TestCase {
 
 		$manager->register($gear);
 
-		$this->assertTrue($manager->start('stub') instanceof Feather\Components\Gear\Container);
+		$this->assertInstanceOf('Feather\\Components\\Gear\\Container', $gear = $manager->start('stub'));
+		$this->assertTrue($manager->started('stub'));
+		$this->assertInstanceOf('Feather\\Gear\\Stub\\Mock', $gear['mock']);
 	}
-
-
 
 }
