@@ -54,7 +54,7 @@ return array(
 		{
 			$feather['sso'] = $feather->share(function($feather)
 			{
-				return new Feather\Components\Auth\Dispactcher($feather);
+				return new Feather\Components\Auth\SSO($feather);
 			});
 		},
 		'gear' => function($feather)
@@ -63,7 +63,14 @@ return array(
 			{
 				return new Feather\Components\Gear\Manager($feather);
 			});
-		}
+		},
+		'redirect' => function($feather)
+		{
+			$feather['redirect'] = $feather->share(function($feather)
+			{
+				return new Feather\Components\Foundation\Redirector(null);
+			});
+		},
 	),
 
 	/*
