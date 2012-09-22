@@ -2,93 +2,79 @@
 
 class ConfigTest extends PHPUnit_Framework_TestCase {
 
+	public $feather;
+
+	public function setUp()
+	{
+		$this->feather = Feather\Components\Support\Facade::application();
+
+		$this->feather['config']->set('test', $this->items());
+	}
+
 	public function testItemsCanBeSet()
 	{
-		$config = $this->getRepository();
+		$this->feather['config']->set('name', 'jason');
+		$this->assertEquals('jason', $this->feather['config']->get('name'));
 
-		$config->set('name', 'jason');
-		$this->assertEquals('jason', $config->get('name'));
+		$this->feather['config']->set('person.name', 'jason');
+		$this->assertEquals('jason', $this->feather['config']->get('person.name'));
 
-		$config->set('person.name', 'jason');
-		$this->assertEquals('jason', $config->get('person.name'));
+		$this->feather['config']->set('namespace::person.name', 'jason');
+		$this->assertEquals('jason', $this->feather['config']->get('namespace::person.name'));
 
-		$config->set('namespace::person.name', 'jason');
-		$this->assertEquals('jason', $config->get('namespace::person.name'));
+		$this->feather['config']->set('gear: mock person.name', 'jason');
+		$this->assertEquals('jason', $this->feather['config']->get('gear: mock person.name'));
 
-		$config->set('gear: mock person.name', 'jason');
-		$this->assertEquals('jason', $config->get('gear: mock person.name'));
-
-		$config->set('theme: mock person.name', 'jason');
-		$this->assertEquals('jason', $config->get('theme: mock person.name'));
+		$this->feather['config']->set('theme: mock person.name', 'jason');
+		$this->assertEquals('jason', $this->feather['config']->get('theme: mock person.name'));
 	}
 
 	public function testGetBasicItems()
 	{
-		$config = $this->getRepository();
-
-		$this->assertEquals('bar', $config->get('test.foo'));
-		$this->assertEquals('orange', $config->get('test.apple'));	
+		$this->assertEquals('bar', $this->feather['config']->get('test.foo'));
+		$this->assertEquals('orange', $this->feather['config']->get('test.apple'));	
 	}
 
 	public function testEntireArrayCanBeReturned()
 	{
-		$config = $this->getRepository();
-
-		$this->assertEquals($this->getItems(), $config->get('test'));
+		$this->assertEquals($this->items(), $this->feather['config']->get('test'));
 	}
 
 	public function testCheckItemExistance()
 	{
-		$config = $this->getRepository();
+		$this->feather['config']->set('foo', 'bar');
 
-		$config->set('foo', 'bar');
-		$this->assertTrue($config->has('foo'));
-
-		$this->assertTrue(!$config->has('apple'));
+		$this->assertTrue($this->feather['config']->has('foo'));
+		$this->assertTrue(!$this->feather['config']->has('apple'));
 	}
 
 	public function testItemsCanBeSaved()
 	{
-		$config = $this->getRepository();
+		$this->feather['config']->set('feather: db.test', 'foobar');
+		$this->feather['config']->save('feather: db.test');
 
-		$config->set('feather: db.test', 'foobar');
-		$config->save('feather: db.test');
+		$this->feather['config']->reload();
 
-		$config->reload();
+		$this->assertEquals('foobar', $this->feather['config']->get('feather: db.test'));
 
-		$this->assertEquals('foobar', $config->get('feather: db.test'));
-
-		$config->delete('feather: db.test');
+		$this->feather['config']->delete('feather: db.test');
 	}
 
 	public function testItemsCanBeDeleted()
 	{
-		$config = $this->getRepository();
+		$this->feather['config']->set('feather: db.test', 'foobar');
+		$this->feather['config']->save('feather: db.test');
 
-		$config->set('feather: db.test', 'foobar');
-		$config->save('feather: db.test');
+		$this->feather['config']->reload();
 
-		$config->reload();
+		$this->feather['config']->delete('feather: db.test');
 
-		$config->delete('feather: db.test');
+		$this->feather['config']->reload();
 
-		$config->reload();
-
-		$this->assertEquals(null, $config->get('feather: db.test'));
+		$this->assertEquals(null, $this->feather['config']->get('feather: db.test'));
 	}
 
-	private function getRepository()
-	{
-		$feather = Feather\Components\Support\Facade::application();
-
-		$config = $feather['config'];
-
-		$config->set('test', $this->getItems());
-
-		return $config;
-	}
-
-	private function getItems()
+	public function items()
 	{
 		return array('foo' => 'bar', 'apple' => 'orange');
 	}
