@@ -28,7 +28,7 @@ set_path('themes', path('feather') . 'themes' . DS);
 | Core Autoloading
 |--------------------------------------------------------------------------
 |
-| Register the Feather namespaces and mappings Laravel's autoloader.
+| Register the Feather namespaces and mappings with Laravel's autoloader.
 |
 */
 
