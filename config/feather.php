@@ -101,10 +101,10 @@ return array(
 		},
 		'date' => function($feather)
 		{
-			$feather['date'] = $feather->share(function($feather)
+			$feather['date'] = function($feather)
 			{
 				return new Feather\Components\Support\Date($feather);
-			});
+			};
 		}
 	),
 );
