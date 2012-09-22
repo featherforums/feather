@@ -2,50 +2,52 @@
 
 class GearTest extends PHPUnit_Framework_TestCase {
 
-	public $gear;
-
-	public $manager;
-
-	public function setUp()
-	{
-		$this->gear = new Feather\Models\Gear(array(
-			'identifier' => 'stub',
-			'location'	 => 'path: ' . __DIR__ . DS . 'mock',
-			'auto'		 => false
-		));
-
-		$this->manager = new Feather\Components\Gear\Manager;
-
-		$this->manager->register($this->gear);
-
-		$this->manager->start('stub');
-	}
-
 	public function testCanRegisterGear()
 	{
-		$this->assertTrue($this->manager->registered('stub'));
+		$feather = $this->stub();
+
+		$this->assertTrue($feather['gear']->registered('stub'));
 	}
 
 	public function testCanStartGear()
 	{
-		$this->assertInstanceOf('Feather\\Components\\Gear\\Container', $gear = $this->manager->start('stub'));
-		$this->assertTrue($this->manager->started('stub'));
+		$feather = $this->stub();
+
+		$this->assertInstanceOf('Feather\\Components\\Gear\\Container', $gear = $feather['gear']->start('stub'));
+		$this->assertTrue($feather['gear']->started('stub'));
 		$this->assertInstanceOf('Feather\\Gear\\Stub\\Mock', $gear['mock']);
 	}
 
 	public function testCanDisableGear()
 	{
-		$this->assertTrue($this->manager->registered('stub'));
+		$feather = $this->stub();
+		
+		$this->assertTrue($feather['gear']->registered('stub'));
 
-		$this->manager->disable('stub');
+		$feather['gear']->disable('stub');
 
-		$this->assertTrue(!$this->manager->registered('stub'));
+		$this->assertTrue(!$feather['gear']->registered('stub'));
 	}
 
 	public function testGearEventsFire()
 	{
-		$this->assertEquals('cat', Feather\Components\Gear\Manager::first('mock.callable'));
-		$this->assertEquals('dog', Feather\Components\Gear\Manager::first('mock.method'));
+		$feather = $this->stub();
+
+		$this->assertEquals('cat', $feather['gear']->first('mock.callable'));
+		$this->assertEquals('dog', $feather['gear']->first('mock.method'));
+	}
+
+	public function stub()
+	{
+		$feather = Feather\Components\Support\Facade::application();
+
+		$feather['gear']->register(new Feather\Models\Gear(array(
+			'identifier' => 'stub',
+			'location'	 => 'path: ' . __DIR__ . DS . 'mock',
+			'auto'		 => false
+		)));
+
+		return $feather;
 	}
 
 }

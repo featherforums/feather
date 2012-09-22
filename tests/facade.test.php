@@ -6,9 +6,12 @@ class FacadeTest extends PHPUnit_Framework_TestCase {
 
 	public function testFacadeCallsApplication()
 	{
-		FacadeStub::application(array('stub' => new ApplicationStub));
+		$feather = Feather\Components\Support\Facade::application();
 
+		FacadeStub::application(array('stub' => new ApplicationStub));
 		$this->assertEquals('dog', FacadeStub::cat());
+
+		Feather\Components\Support\Facade::application($feather);
 	}
 
 }

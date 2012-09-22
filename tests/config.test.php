@@ -79,7 +79,9 @@ class ConfigTest extends PHPUnit_Framework_TestCase {
 
 	private function getRepository()
 	{
-		$config = new Feather\Components\Config\Repository;
+		$feather = Feather\Components\Support\Facade::application();
+
+		$config = $feather['config'];
 
 		$config->set('test', $this->getItems());
 
