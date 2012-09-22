@@ -4,18 +4,27 @@ use Auth;
 use Route;
 use Session;
 use InvalidArgumentException;
-use Feather\Components\Foundation\Component;
+use Feather\Components\Foundation;
 
-class Authorizer extends Component {
+class Authorizer extends Foundation\Component {
 
 	/**
-	 * Bootstrap the authentication by extending with a custom driver and firing
-	 * any registerd authenticator events.
+	 * The current logged in user.
 	 * 
+	 * @var mixed
+	 */
+	public $user;
+
+	/**
+	 * Overload the constructor, bootstrap the authenticator.
+	 * 
+	 * @param  Feather\Components\Foundation\Application  $feather
 	 * @return void
 	 */
-	public function bootstrap()
+	public function __construct(Foundation\Application $feather)
 	{
+		parent::__construct($feather);
+
 		Auth::extend('feather', function()
 		{
 			return new Driver;
@@ -24,6 +33,10 @@ class Authorizer extends Component {
 		// Override the Laravel authentication driver for this run only.
 		$this->feather['config']->set('laravel: auth.driver', 'feather');
 
+		$this->user = $this->user();
+
+		// Depending on the authenticator being used their may be a response thrown back that
+		// interupts the normal response of Feather.
 		$authenticator = $this->feather['config']->get('feather: db.auth.driver');
 
 		if(!$this->online() and ($response = $this->feather['gear']->first("auth: bootstrap {$authenticator}")))
@@ -46,7 +59,7 @@ class Authorizer extends Component {
 	 * @param  object  $resource
 	 * @return bool
 	 */
-	public function can($action, $resource)
+	public function can($action, $resource = null)
 	{
 		if(!str_contains($action, ': '))
 		{
@@ -59,7 +72,7 @@ class Authorizer extends Component {
 		// as that's how role permissions are stored in the database.
 		$action = str_replace(' ', '_', $action);
 
-		foreach($this->user()->roles as $role)
+		foreach($this->user->roles as $role)
 		{
 			if($role->{"{$verb}_{$action}"})
 			{
@@ -95,7 +108,7 @@ class Authorizer extends Component {
 	 * @param  object  $resource
 	 * @return bool
 	 */
-	public function cannot($action, $resource)
+	public function cannot($action, $resource = null)
 	{
 		return !$this->can($action, $resource);
 	}
@@ -108,11 +121,16 @@ class Authorizer extends Component {
 	 */
 	public function is($roles)
 	{
+		if(!is_array($roles))
+		{
+			$roles = array($roles);
+		}
+
 		// If the role has an aliased name then make sure we grab the correct name of
 		// the role from the aliases array.
 		$aliases = $this->feather['config']->get('feather: auth.aliases');
 
-		foreach((array) $roles as $key => $role)
+		foreach($roles as $key => $role)
 		{
 			if(array_key_exists(strtolower($role), $aliases))
 			{
@@ -120,9 +138,9 @@ class Authorizer extends Component {
 			}
 		}
 
-		foreach($this->user()->roles as $role)
+		foreach($this->user->roles as $role)
 		{
-			if(in_array(strtolower($role->name), (array) $roles))
+			if(in_array(strtolower($role->name), $roles))
 			{
 				return true;
 			}
@@ -177,7 +195,7 @@ class Authorizer extends Component {
 	 */
 	public function activated()
 	{
-		return (bool) $this->user()->activated;
+		return (bool) $this->user->activated;
 	}
 
 	/**
