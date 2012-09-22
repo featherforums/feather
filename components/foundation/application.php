@@ -1,4 +1,4 @@
-<?php namespace Feather\Components\Feather;
+<?php namespace Feather\Components\Foundation;
 
 use Closure;
 use ArrayAccess;
