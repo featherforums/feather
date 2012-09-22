@@ -2,11 +2,6 @@
 
 class ConfigTest extends PHPUnit_Framework_TestCase {
 
-	public function setUp()
-	{
-		Bundle::start('feather');
-	}
-
 	public function testItemsCanBeSet()
 	{
 		$config = $this->getRepository();
