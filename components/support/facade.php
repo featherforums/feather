@@ -12,13 +12,18 @@ abstract class Facade {
 	protected static $feather;
 
 	/**
-	 * Set the application facade instance.
+	 * Set or get the application facade instance.
 	 * 
 	 * @param  Feather\Components\Feather\Application  $app
-	 * @return void
+	 * @return Feather\Components\Feather\Application
 	 */
-	public static function application($app)
+	public static function application($app = null)
 	{
+		if(is_null($app))
+		{
+			return static::$feather;
+		}
+
 		static::$feather = $app;
 	}
 
