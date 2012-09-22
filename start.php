@@ -45,7 +45,7 @@ Autoloader::namespaces(array(
 |
 */
 
-$feather = new Components\Feather\Application;
+$feather = new Components\Foundation\Application;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,9 +58,9 @@ $feather = new Components\Feather\Application;
 |
 */
 
-$feather['config'] = $feather->share(function()
+$feather['config'] = $feather->share(function($feather)
 {
-	return new Components\Config\Repository;
+	return new Components\Config\Repository($feather);
 });
 
 define('FEATHER_DATABASE', 'feather');
@@ -123,6 +123,17 @@ foreach($feather['config']->get('feather: feather.applications') as $application
 
 	starts_with(Request::uri(), $handles) and Bundle::start("feather/{$application}");
 }
+
+/*
+|--------------------------------------------------------------------------
+| Feather Authentication
+|--------------------------------------------------------------------------
+|
+| Boostrap the authentication component.
+|
+*/
+
+$feather['auth']->bootstrap();
 
 /*
 |--------------------------------------------------------------------------

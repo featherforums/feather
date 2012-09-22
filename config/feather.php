@@ -47,14 +47,14 @@ return array(
 		{
 			$feather['auth'] = $feather->share(function($feather)
 			{
-				return new Feather\Components\Auth\Protector;
+				return new Feather\Components\Auth\Protector($feather);
 			});
 		},
 		'gear' => function($feather)
 		{
 			$feather['gear'] = $feather->share(function($feather)
 			{
-				return new Feather\Components\Gear\Manager;
+				return new Feather\Components\Gear\Manager($feather);
 			});
 		}
 	),
