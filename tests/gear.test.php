@@ -2,36 +2,50 @@
 
 class GearTest extends PHPUnit_Framework_TestCase {
 
-	public function testCanRegisterGear()
+	public $gear;
+
+	public $manager;
+
+	public function setUp()
 	{
-		$gear = new Feather\Models\Gear(array(
+		$this->gear = new Feather\Models\Gear(array(
 			'identifier' => 'stub',
 			'location'	 => 'path: ' . __DIR__ . DS . 'mock',
 			'auto'		 => false
 		));
 
-		$manager = new Feather\Components\Gear\Manager;
+		$this->manager = new Feather\Components\Gear\Manager;
 
-		$manager->register($gear);
+		$this->manager->register($this->gear);
 
-		$this->assertTrue($manager->registered('stub'));
+		$this->manager->start('stub');
+	}
+
+	public function testCanRegisterGear()
+	{
+		$this->assertTrue($this->manager->registered('stub'));
 	}
 
 	public function testCanStartGear()
 	{
-		$gear = new Feather\Models\Gear(array(
-			'identifier' => 'stub',
-			'location'	 => 'path: ' . __DIR__ . DS . 'mock',
-			'auto'		 => false
-		));
-
-		$manager = new Feather\Components\Gear\Manager;
-
-		$manager->register($gear);
-
-		$this->assertInstanceOf('Feather\\Components\\Gear\\Container', $gear = $manager->start('stub'));
-		$this->assertTrue($manager->started('stub'));
+		$this->assertInstanceOf('Feather\\Components\\Gear\\Container', $gear = $this->manager->start('stub'));
+		$this->assertTrue($this->manager->started('stub'));
 		$this->assertInstanceOf('Feather\\Gear\\Stub\\Mock', $gear['mock']);
+	}
+
+	public function testCanDisableGear()
+	{
+		$this->assertTrue($this->manager->registered('stub'));
+
+		$this->manager->disable('stub');
+
+		$this->assertTrue(!$this->manager->registered('stub'));
+	}
+
+	public function testGearEventsFire()
+	{
+		$this->assertEquals('cat', Feather\Components\Gear\Manager::first('mock.callable'));
+		$this->assertEquals('dog', Feather\Components\Gear\Manager::first('mock.method'));
 	}
 
 }
