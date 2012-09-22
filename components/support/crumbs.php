@@ -20,7 +20,7 @@ class Crumbs extends Component {
 	 * @param  array|object  $crumb
 	 * @return void
 	 */
-	public static function drop($crumb)
+	public function drop($crumb)
 	{
 		if($crumb instanceof Models\Place)
 		{
