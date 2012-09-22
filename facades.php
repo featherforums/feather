@@ -43,3 +43,36 @@ class Gear extends Components\Support\Facade {
 	protected static function accessor(){ return 'gear'; }
 
 }
+
+class Crumbs extends Components\Support\Facade {
+
+	/**
+	 * Gets the name of the facade component.
+	 * 
+	 * @return string
+	 */
+	protected static function accessor(){ return 'crumbs'; }
+
+}
+
+class Redirect extends Components\Support\Facade {
+
+	/**
+	 * Gets the name of the facade component.
+	 * 
+	 * @return string
+	 */
+	protected static function accessor(){ return 'redirect'; }
+
+}
+
+class Validator extends Components\Support\Facade {
+
+	/**
+	 * Gets the name of the facade component.
+	 * 
+	 * @return string
+	 */
+	protected static function accessor(){ return 'validator'; }
+
+}
