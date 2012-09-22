@@ -123,3 +123,23 @@ foreach($feather['config']->get('feather: feather.applications') as $application
 
 	starts_with(Request::uri(), $handles) and Bundle::start("feather/{$application}");
 }
+
+/*
+|--------------------------------------------------------------------------
+| Feather CLI
+|--------------------------------------------------------------------------
+|
+| When Feather is running via the CLI we'll automatically load in Mockery
+| for testing purposes only.
+|
+*/
+
+if(Request::cli())
+{
+	require 'Mockery/Loader.php';
+	require 'Hamcrest/Hamcrest.php';
+
+	with(new \Mockery\Loader)->register();
+
+	var_dump('here');
+}
