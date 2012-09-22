@@ -4,8 +4,9 @@ use Event;
 use FilesystemIterator;
 use Feather\Models\Gear;
 use InvalidArgumentException;
+use Feather\Components\Foundation\Component;
 
-class Manager {
+class Manager extends Component {
 
 	/**
 	 * Registered Gears.

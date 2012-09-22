@@ -5,8 +5,9 @@ use Str;
 use Cache;
 use Event;
 use Config;
+use Feather\Components\Foundation;
 
-class Repository {
+class Repository extends Foundation\Component {
 
 	/**
 	 * Dirty configuration items.
@@ -19,10 +20,13 @@ class Repository {
 	 * Bootstrap the config repository, override the Laravel event for configuration
 	 * file loading so that Gear and Theme items can be picked up.
 	 * 
+	 * @param  Feather\Components\Foundation\Application
 	 * @return void
 	 */
-	public function __construct()
+	public function __construct(Foundation\Application $feather)
 	{
+		parent::__construct($feather);
+
 		Event::override(Config::loader, function($bundle, $file)
 		{
 			if(str_contains($file, ':'))
