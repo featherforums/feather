@@ -1,5 +1,6 @@
 <?php namespace Feather\Components\Gear;
 
+use Event;
 use FilesystemIterator;
 use Feather\Models\Gear;
 use InvalidArgumentException;
@@ -102,7 +103,7 @@ class Manager {
 		{
 			if(ends_with($file->getFilename(), '.gear.php'))
 			{
-				require $file->getPathname();
+				require_once $file->getPathname();
 
 				$name = str_replace('.gear.php', null, $file->getFilename());
 
@@ -130,6 +131,20 @@ class Manager {
 	}
 
 	/**
+	 * Disable a gear for this run only.
+	 * 
+	 * @param  string  $gear
+	 * @return void
+	 */
+	public function disable($gear)
+	{
+		if($this->registered($gear))
+		{
+			unset($this->gears[$gear]);
+		}
+	}
+
+	/**
 	 * Gets a Gears container.
 	 * 
 	 * @param  string  $gear
@@ -143,6 +158,30 @@ class Manager {
 		}
 
 		return $this->started[$gear];
+	}
+
+	/**
+	 * Fire an event and implodes the returned results.
+	 * 
+	 * @param  string  $event
+	 * @param  array   $parameters
+	 * @return string
+	 */
+	public function fire($event, $parameters = array())
+	{
+		return implode(PHP_EOL, array_filter(Event::fire($event, array($parameters))));
+	}
+
+	/**
+	 * Fire the first event in the queue.
+	 * 
+	 * @param  string  $event
+	 * @param  array   $parameters
+	 * @return string
+	 */
+	public function first($event, $parameters = array())
+	{
+		return Event::first($event, $parameters);
 	}
 
 }
