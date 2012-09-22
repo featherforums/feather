@@ -6,24 +6,29 @@ class FacadeTest extends PHPUnit_Framework_TestCase {
 
 	public function testFacadeCallsApplication()
 	{
-		FacadeStub::application(array('foo' => new ApplicationStub));
+		FacadeStub::application(array('stub' => new ApplicationStub));
 
-		$this->assertEquals('apple', FacadeStub::bar());
+		$this->assertEquals('dog', FacadeStub::cat());
 	}
 
 }
 
 class FacadeStub extends Feather\Components\Support\Facade {
 
-	protected static function accessor(){ return 'foo'; }
+	/**
+	 * Gets the name of the facade component.
+	 * 
+	 * @return string
+	 */
+	protected static function accessor(){ return 'stub'; }
 
 }
 
 class ApplicationStub {
 
-	public function bar()
+	public static function cat()
 	{
-		return 'apple';
+		return 'dog';
 	}
 
 }
