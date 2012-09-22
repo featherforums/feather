@@ -47,7 +47,14 @@ return array(
 		{
 			$feather['auth'] = $feather->share(function($feather)
 			{
-				return new Feather\Components\Auth\Protector($feather);
+				return new Feather\Components\Auth\Authorizer($feather);
+			});
+		},
+		'sso' => function($feather)
+		{
+			$feather['sso'] = $feather->share(function($feather)
+			{
+				return new Feather\Components\Auth\Dispactcher($feather);
 			});
 		},
 		'gear' => function($feather)
