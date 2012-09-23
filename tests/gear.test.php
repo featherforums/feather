@@ -8,7 +8,7 @@ class GearTest extends PHPUnit_Framework_TestCase {
 	{
 		$this->feather = Feather\Components\Support\Facade::application();
 
-		$this->feather['gear']->register(new Feather\Models\Gear(array(
+		$this->feather['gear']->register(new Feather\Core\Gear(array(
 			'identifier' => 'stub',
 			'location'	 => 'path: ' . __DIR__ . DS . 'mock',
 			'auto'		 => false

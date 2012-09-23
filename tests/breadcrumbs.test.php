@@ -18,7 +18,7 @@ class BreadcrumbsTest extends PHPUnit_Framework_TestCase {
 
 	public function testCanGetHTML()
 	{
-		$this->assertEquals('<li><a href="http://:/index.php/">stub</a></li>', $this->feather['breadcrumbs']->item('/', 'stub'));
+		$this->assertEquals('<li><a href="' . URL::home() . '">stub</a></li>', $this->feather['breadcrumbs']->item('/', 'stub'));
 	}
 
 }

@@ -40,11 +40,11 @@ class AuthTest extends PHPUnit_Framework_TestCase {
 
 	public function user()
 	{
-		return new Feather\Models\User(array(
+		return new Feather\Core\User(array(
 			'roles' => array(
-				new Feather\Models\Role(array('do_something' => 1)),
-				new Feather\Models\Role(array('name' => 'Administrator')),
-				new Feather\Models\Role(array('view_something' => 0))
+				new Feather\Core\Role(array('do_something' => 1)),
+				new Feather\Core\Role(array('name' => 'Administrator')),
+				new Feather\Core\Role(array('view_something' => 0))
 			),
 			'activated' => 1
 		));

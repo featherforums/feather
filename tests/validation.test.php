@@ -32,7 +32,7 @@ class ValidationTest extends PHPUnit_Framework_TestCase {
 
 	public function testCanLoadValidatorClosure()
 	{
-		$this->feather['config']->set('feather: validation.test', function($validator){});
+		$this->feather['config']->set('feather core: validation.test', function($validator){});
 
 		$validator = $this->feather['validator']->get('test');
 
@@ -55,7 +55,7 @@ class ValidationTest extends PHPUnit_Framework_TestCase {
 
 	public function testValidationDoesPass()
 	{
-		$this->feather['config']->set('feather: validation.test', function($validator){
+		$this->feather['config']->set('feather core: validation.test', function($validator){
 			$validator->rule('cat', 'required');
 		});
 
@@ -64,7 +64,7 @@ class ValidationTest extends PHPUnit_Framework_TestCase {
 
 	public function testValidationExceptionIsThrown()
 	{
-		$this->feather['config']->set('feather: validation.test', function($validator){
+		$this->feather['config']->set('feather core: validation.test', function($validator){
 			$validator->rule('cat', 'required');
 		});
 
