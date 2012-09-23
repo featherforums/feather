@@ -21,7 +21,7 @@ class Recaptcha extends Foundation {
 
 		$this->listen('assets: change styles', 'styling');
 
-		$this->listen('validation: before register', 'validation');
+		$this->listen('validation: before auth.register', 'validation');
 	}
 
 	/**
@@ -57,20 +57,21 @@ class Recaptcha extends Foundation {
 	public function validation($validator)
 	{
 		$validator->rule('recaptcha_response_field', array('required', 'recaptcha'))
-				  ->message('recaptcha_response_field.required', 'plugin: recaptcha messages.is_required')
-				  ->message('recaptcha_response_field.recaptcha', 'plugin: recaptcha messages.is_incorrect');
+				  ->message('recaptcha_response_field.required', 'gear: recaptcha messages.is_required')
+				  ->message('recaptcha_response_field.recaptcha', 'gear: recaptcha messages.is_incorrect');
 
-		// Map to the Recaptcha library so we can register our validation rule with the
-		// validation.
+		// Map to the Recaptcha library so we can register our validation rule with the validation.
 		Autoloader::map(array(
 			'Recaptcha\\Recaptcha' => __DIR__ . DS . 'classes' . DS . 'recaptcha.php'
 		));
 
-		Validator::register('recaptcha', function($attribute, $value, $parameters)
-		{
-			$private = $this->feather['config']->get('plugin: recaptcha keys.private');
+		$feather = $this->feather;
 
-			$recaptcha = Recaptcha\Recaptcha::recaptcha_check_answer($private, Request::ip(), Input::get('recaptcha_challenge_field'), $value);
+		Validator::register('recaptcha', function($attribute, $value, $parameters) use ($feather)
+		{
+			$private = $feather['config']->get('gear: recaptcha keys.private');
+
+			$recaptcha = \Recaptcha\Recaptcha::recaptcha_check_answer($private, Request::ip(), Input::get('recaptcha_challenge_field'), $value);
 
 			return $recaptcha->is_valid;
 		});
