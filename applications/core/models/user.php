@@ -1,4 +1,4 @@
-<?php namespace Feather\Models;
+<?php namespace Feather\Core;
 
 class User extends Base {
 
@@ -23,7 +23,7 @@ class User extends Base {
 	 */
 	public function roles()
 	{
-		return $this->has_many_and_belongs_to('Feather\\Models\\Role', 'user_roles', 'user_id', 'role_id');
+		return $this->has_many_and_belongs_to('Feather\\Core\\Role', 'user_roles', 'user_id', 'role_id');
 	}
 
 }

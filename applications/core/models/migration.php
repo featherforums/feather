@@ -1,4 +1,4 @@
-<?php namespace Feather\Models;
+<?php namespace Feather\Core;
 
 class Migration extends Base {
 
