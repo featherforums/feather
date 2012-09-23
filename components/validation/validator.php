@@ -111,7 +111,7 @@ class Validator extends Component {
 	{		
 		// If a response is returned from the closure then we have a custom error messages
 		// to throw with the exception. 
-		if($responses = call_user_func_array(reset($this->validating), array($this)))
+		if($responses = call_user_func_array(reset($this->validating), array($this, $this->feather)))
 		{
 			if(!is_array(reset($responses))) $responses = array(array_shift($responses) => array());
 
