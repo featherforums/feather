@@ -2,13 +2,15 @@
 
 use Str;
 use Event;
+use Cache;
+use Bundle;
 use Request;
 use FilesystemIterator;
 use Feather\Core\Gear;
 use InvalidArgumentException;
-use Feather\Components\Foundation\Component;
+use Feather\Components\Foundation;
 
-class Manager extends Component {
+class Manager extends Foundation\Component {
 
 	/**
 	 * Registered Gears.
@@ -23,6 +25,41 @@ class Manager extends Component {
 	 * @var array
 	 */
 	public $started = array();
+
+	/**
+	 * Bootstraps the Gears, loads from database and registers with the manager.
+	 * 
+	 * @param  Feather\Components\Foundation\Application  $feather
+	 * @return void
+	 */
+	public function __construct(Foundation\Application $feather)
+	{
+		parent::__construct($feather);
+
+		Cache::forget('gears');
+
+		$manager = $this;
+
+		return Cache::sear('gears', function() use ($manager)
+		{
+			foreach(Gear::enabled() as $gear)
+			{
+				Bundle::register($gear->identifier, array(
+					'location'  => 'path: ' . path('gears') . $gear->identifier,
+					'handles' 	=> trim(str_replace('(:feather)', Bundle::option('feather', 'handles'), $gear->handles), '/'),
+					'auto'	  	=> (bool) $gear->auto,
+					'autoloads' => (array) json_decode($gear->loads)
+				));
+
+				if($gear->auto)
+				{
+					Bundle::start($gear->identifier);
+				}
+
+				$manager->register($gear);
+			}
+		});
+	}
 
 	/**
 	 * Register a Gear with the manager.
@@ -115,6 +152,8 @@ class Manager extends Component {
 				if(class_exists($class))
 				{
 					$this->started[$gear][$name] = new $class;
+
+					$this->started[$gear][$name]->application($this->feather);
 				}
 			}
 		}
