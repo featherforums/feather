@@ -1,0 +1,12 @@
+{
+	"name":"reCAPTCHA",
+	"description":"reCAPTCHA is a bot-prevention tool provided by Google.",
+	"version":"1.0",
+	"author":
+	{
+		"name":"Jason Lewis",
+		"email":"jason.lewis1991@gmail.com",
+		"website":"http://jasonlewis.me"
+	},
+	"dependencies":{}
+}

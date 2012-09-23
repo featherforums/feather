@@ -1,0 +1,36 @@
+#recaptcha_image {
+	margin: 4px 0 10px;
+}
+
+#recaptcha_info {
+	margin: 10px 0;
+	font-weight: bold;
+	font-size: 11px;
+}
+
+.join-recaptcha {
+	clear: left;
+	list-style-type: none;
+	padding: 0;
+	margin: 10px 0 15px;
+}
+
+.join-recaptcha > li {
+	padding: 0;
+	margin: 0 8px 0 0;
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	background: url('../img/sprite.png') no-repeat 0 0px;
+}
+
+.join-recaptcha > li.refresh { background-position: -32px 0; }
+.join-recaptcha > li.audio { background-position: 0 0; }
+.join-recaptcha > li.image { background-position: -48px 0; }
+.join-recaptcha > li.help { background-position: -16px 0; }
+
+.join-recaptcha > li > a {
+	display: block;
+	width: 16px;
+	height: 16px;
+}
