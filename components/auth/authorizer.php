@@ -80,9 +80,9 @@ class Authorizer extends Component {
 				{
 					if($this->feather['config']->has("feather: auth.rules.{$verb}.{$action}"))
 					{
-						$callback = $this->feather['config']->get("feather: auth.rules.{$verb}.{$action}");
+						$resolver = $this->feather['config']->get("feather: auth.rules.{$verb}.{$action}");
 
-						return $callback($resource);
+						return $resolver($resource);
 					}
 
 					continue;
@@ -91,6 +91,40 @@ class Authorizer extends Component {
 				// If there was no valid resource then the action was simply a role based action. We
 				// can return true here because the user has the correct permissions for this action.
 				return true;
+			}
+		}
+
+		// If we have a resource and it's an instance of Place then we need to perform a couple extra
+		// permission checks on it.
+		if($resource instanceof \Feather\Core\Place)
+		{
+			// Some places are not postable, make sure we aren't trying to start a discussion
+			// in a non-postable place.
+			if(in_array($verb, array('start')) and !$resource->postable)
+			{
+				return false;
+			}
+
+			foreach($resource->permissions as $permission)
+			{
+				if(array_key_exists($permission->role_id, $this->user->roles))
+				{
+					if($permission->{"{$verb}_{$action}"})
+					{
+						return true;
+					}
+				}
+			}
+		}
+
+		// Regardless, we need to run through the authentication rules in the configuration file.
+		else
+		{
+			if($this->feather['config']->has("feather: auth.rules.{$verb}.{$action}"))
+			{
+				$resolver = $this->feather['config']->get("feather: auth.rules.{$verb}.{$action}");
+
+				return $resolver($resource);
 			}
 		}
 
