@@ -117,7 +117,7 @@ class Validator extends Component {
 
 			foreach($responses as $response => $replacements)
 			{
-				$responses[$response] = __("{$this->application}::{$response}", $replacements)->get();
+				$responses[$response] = __("feather {$this->application}::{$response}", $replacements)->get();
 			}
 
 			throw new FeatherValidationException(new Messages($responses));
@@ -172,7 +172,7 @@ class Validator extends Component {
 			list($message, $replacements) = $message;
 		}
 
-		$this->messages[str_replace('.', '_', $rule)] = __("{$this->application}::{$message}", $replacements)->get();
+		$this->messages[str_replace('.', '_', $rule)] = __("feather {$this->application}::{$message}", $replacements)->get();
 
 		return $this;
 	}
