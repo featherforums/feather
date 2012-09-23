@@ -154,7 +154,7 @@ Blade::extend(function($value)
 {
 	$matcher = Blade::matcher('error');
 
-	return preg_replace($matcher, '$1<?php echo $errors->has$2 ? view("feather core::error.inline", array("error" => $errors->first$1)) : null; ?>', $value);
+	return preg_replace($matcher, '$1<?php echo $errors->has$2 ? view("feather core::error.inline", array("error" => $errors->first$2)) : null; ?>', $value);
 });
 
 /*

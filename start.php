@@ -89,6 +89,10 @@ require path('feather') . 'bootstrap' . DS . 'exceptions' . EXT;
 
 require path('feather') . 'bootstrap' . DS . 'ioc' . EXT;
 
+require path('feather') . 'bootstrap' . DS . 'validators' . EXT;
+
+require path('feather') . 'bootstrap' . DS . 'languages' . EXT;
+
 /*
 |--------------------------------------------------------------------------
 | Load Feather Components
