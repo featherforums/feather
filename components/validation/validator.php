@@ -1,13 +1,12 @@
-<?php namespace Feather\Components\Support;
+<?php namespace Feather\Components\Validation;
 
 use DB;
-use Validator;
 use Laravel\Messages;
 use InvalidArgumentException;
 use FeatherValidationException;
 use Feather\Components\Foundation\Component;
 
-class Validation extends Component {
+class Validator extends Component {
 
 	/**
 	 * Application to load messages from.
@@ -118,7 +117,7 @@ class Validation extends Component {
 
 		$this->feather['gear']->fire("validation: before {$event}", array($this));
 
-		$validator = new Validator($this->input, $this->rules, $this->messages);
+		$validator = new \Validator($this->input, $this->rules, $this->messages);
 
 		if($validator->connection(DB::connection(FEATHER_DATABASE))->fails())
 		{
