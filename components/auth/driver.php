@@ -2,7 +2,7 @@
 
 use Hash;
 use Cache;
-use Feather\Models;
+use Feather\Core;
 
 class Driver extends \Laravel\Auth\Drivers\Driver {
 
@@ -19,7 +19,7 @@ class Driver extends \Laravel\Auth\Drivers\Driver {
 		{
 			return Cache::remember("user_{$id}", function() use ($id)
 			{
-				$user = Models\User::with(array('roles'))->find($id);
+				$user = Core\User::with(array('roles'))->find($id);
 
 				// To provide a cleaner syntax when accessing roles, we'll make each of the roles keys
 				// the same as its ID.
@@ -30,16 +30,16 @@ class Driver extends \Laravel\Auth\Drivers\Driver {
 				$user->relationships['roles'] = $roles;
 
 				return $user;
-			}, Models\User::cache_time);
+			}, Core\User::cache_time);
 		}
 		else
 		{
 			return Cache::remember('guest', function()
 			{
-				return new Models\User(array(
-					'roles' => array(3 => Models\Role::find(3))	
+				return new Core\User(array(
+					'roles' => array(3 => Core\Role::find(3))	
 				), true);
-			}, Models\User::cache_time);
+			}, Core\User::cache_time);
 		}
 	}
 
@@ -53,7 +53,7 @@ class Driver extends \Laravel\Auth\Drivers\Driver {
 	{
 		// Find the user in the database with the username they have provided in the
 		// login form. If no user can be found then that's as far as we go.
-		if(!$user = Models\User::where_username($credentials['username'])->first())
+		if(!$user = Core\User::where_username($credentials['username'])->first())
 		{
 			return false;
 		}
@@ -62,7 +62,7 @@ class Driver extends \Laravel\Auth\Drivers\Driver {
 		// a couple of extra checks. A migrating user has only a single role, which
 		// is the migrating roll. If the user has not been migrated then we'll
 		// attempt to migrate them.
-		if($migration = Models\Migration::active())
+		if($migration = Core\Migration::active())
 		{
 			$driver = Migrator\Drivers\Driver::make($migration);
 
@@ -104,13 +104,13 @@ class Driver extends \Laravel\Auth\Drivers\Driver {
 	/**
 	 * Log a user in to Feather.
 	 * 
-	 * @param  int|Feather\Models\User  $user
+	 * @param  int|Feather\Core\User  $user
 	 * @param  bool                     $remember
 	 * @return bool
 	 */
 	public function login($user, $remember = false)
 	{
-		if($user instanceof Models\User)
+		if($user instanceof Core\User)
 		{
 			$user = $user->id;
 		}
