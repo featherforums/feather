@@ -1,7 +1,5 @@
 <?php
 
-Bundle::start('feather');
-
 class FacadeTest extends PHPUnit_Framework_TestCase {
 
 	public function testFacadeCallsApplication()
@@ -15,6 +13,8 @@ class FacadeTest extends PHPUnit_Framework_TestCase {
 	}
 
 }
+
+Bundle::start('feather');
 
 class FacadeStub extends Feather\Components\Support\Facade {
 
