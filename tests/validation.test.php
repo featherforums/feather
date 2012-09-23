@@ -50,7 +50,7 @@ class ValidationTest extends PHPUnit_Framework_TestCase {
 	{
 		$validator = $this->feather['validator']->message('cat', 'dog');
 
-		$this->assertEquals(array('cat' => 'core::dog'), $validator->messages);
+		$this->assertEquals(array('cat' => 'feather core::dog'), $validator->messages);
 	}
 
 	public function testValidationDoesPass()
