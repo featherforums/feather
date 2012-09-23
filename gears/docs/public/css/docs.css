@@ -1,0 +1,155 @@
+body {
+	padding-top: 60px;
+	line-height: 1.6em;
+	padding-bottom: 20px;
+}
+
+li {
+	line-height: 1.6em;
+}
+
+p:last-child {
+	margin-bottom: 0;
+}
+
+.sidebar-nav {
+	padding: 8px;
+}
+
+pre {
+    color: #333333;
+    display: block;
+    font-family: Menlo,Monaco,"Courier New",monospace;
+    font-size: 12px;
+    line-height: 18px;
+}
+
+.prettyprint {
+    margin-bottom: 24px;
+}
+
+.com {
+    color: #5A525F;
+}
+
+.lit {
+    color: #195F91;
+}
+
+.pun, .opn, .clo {
+    color: #93A1A1;
+}
+
+.fun {
+    color: #DC322F;
+}
+
+.str, .atv {
+    color: #D01D33;
+}
+
+.kwd, .linenums .tag {
+    color: #142459;
+}
+
+.typ, .atn, .dec, .var {
+    color: #947897;
+}
+
+.pln {
+    color: #666666;
+}
+
+.prettyprint {
+	background-color: #F9F9F9;
+    border: 1px solid #F2F2F2;
+    border-radius: 2px 2px 2px 2px;
+    max-height: 300px;
+    overflow: auto;
+    padding: 20px;
+}
+
+.prettyprint.linenums {
+    box-shadow: 70px 0 0 #FFFFFF inset, 71px 0 0 #F1F1F1 inset;
+}
+
+ol.linenums {
+    margin: 0 0 0 50px;
+}
+
+ol.linenums li {
+    color: #BEBEC5;
+    line-height: 21px;
+    margin: 0;
+    padding-left: 30px;
+    text-shadow: 0 1px 0 #FFFFFF;
+}
+
+ol.linenums li:hover {
+    background-color: #F3F3F3;
+}
+
+.prettyprint.linenums {
+	box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+}
+
+.prettyprint.linenums li {
+	color: #F9F9F9 !important;
+	padding-left: 0 !important;
+	font-size: 12px !important;
+}
+
+ol.linenums {
+	margin: 0 !important;
+}
+
+.api {
+	width: 100%;
+	background-color: #F9F9F9;
+	border: 1px solid #e8e8e8;
+	margin: 18px 0 18px;
+}
+
+.api:last-child {
+	margin: 0;
+}
+
+.api th {
+	padding: 10px;
+	border-bottom: 1px solid #e8e8e8;
+	text-align: left;
+}
+
+.api .api-label {
+	background-color: #f5f5f5;
+	vertical-align: top;
+	font-weight: bold;
+	border-right: 1px solid #e8e8e8;
+}
+
+.api td {
+	padding: 10px;
+}
+
+.api .parameters th {
+	text-transform: uppercase;
+	color: #777;
+	border-bottom: 0;
+	padding: 0;
+}
+
+.api .parameters td {
+	padding: 0 48px 0 0;
+}
+
+.api .parameter {
+	display: pre;
+	color: #333;
+	font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+}
+
+.api .description {
+	border-top: 1px solid #e8e8e8;
+}
