@@ -16,9 +16,11 @@ use Autoloader;
 
 set_path('feather', __DIR__ . DS);
 
-set_path('core', path('feather') . 'applications' . DS . 'core' . DS);
+set_path('applications', path('feather') . 'applications' . DS);
 
-set_path('admin', path('feather') . 'applications' . DS . 'admin' . DS);
+set_path('core', path('applications') . 'core' . DS);
+
+set_path('admin', path('applications') . 'admin' . DS);
 
 set_path('gears', path('feather') . 'gears' . DS);
 
