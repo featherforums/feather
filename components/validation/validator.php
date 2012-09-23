@@ -9,7 +9,7 @@ use Feather\Components\Foundation\Component;
 class Validator extends Component {
 
 	/**
-	 * Application to load messages from.
+	 * Application to load from.
 	 * 
 	 * @var string
 	 */
@@ -71,7 +71,7 @@ class Validator extends Component {
 	 */
 	public function get($validator)
 	{
-		if(!$this->validating[$validator] = $this->feather['config']->get("feather: validation.{$validator}"))
+		if(!$this->validating[$validator] = $this->feather['config']->get("feather {$this->application}: validation.{$validator}"))
 		{
 			throw new InvalidArgumentException("Invalid validator [{$validator}] supplied.");
 		}
