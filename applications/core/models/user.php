@@ -76,7 +76,7 @@ class User extends Base {
 	 * 
 	 * @param  array   $input
 	 * @param  bool    $activated
-	 * @return object
+	 * @return Feather\Core\User
 	 */
 	public static function register($input)
 	{
@@ -110,6 +110,33 @@ class User extends Base {
 	public static function edit($user, $input)
 	{
 
+	}
+
+	/**
+	 * Register a new user and associate it with an e-mail from an authenticator.
+	 * 
+	 * @param  array  $associate
+	 * @param  array  $input
+	 * @return Feather\Core\User
+	 */
+	public static function associate($associate, $input)
+	{
+		$user = new static(array(
+			'username'						 => $input['username'],
+			'authenticator'					 => Config::get('feather: db.auth.driver'),
+			'authenticator_token'			 => $associate['token'],
+			'authenticator_associated_email' => $associate['email'],
+			'email'							 => $input['email']
+		));
+
+		if(!$user->save())
+		{
+			throw new FeatherModelException;
+		}
+
+		$user->roles()->attach(2);
+
+		return $user;
 	}
 
 }

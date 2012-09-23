@@ -1,5 +1,6 @@
 <?php namespace Feather;
 
+use View;
 use Autoloader;
 
 /*
@@ -25,3 +26,14 @@ $feather = Components\Support\Facade::application();
 Autoloader::map(array(
 	'Feather_Base_Controller' => path('core') . 'controllers' . DS . 'base' . EXT
 ));
+
+/*
+|--------------------------------------------------------------------------
+| Core Template
+|--------------------------------------------------------------------------
+|
+| Name the core template.
+|
+*/
+
+View::name('feather core::template', 'template');
