@@ -5,7 +5,7 @@ use HTML;
 use Feather\Models;
 use Feather\Components\Foundation\Component;
 
-class Crumbs extends Component {
+class Breadcrumbs extends Component {
 
 	/**
 	 * Crumbs to be dropped on the trail.
