@@ -22,6 +22,6 @@ $feather = Components\Support\Facade::application();
 |
 */
 
-Autoloader::namespaces(array(
-	'Feather\\Models' => path('core') . 'models'
+Autoloader::map(array(
+	'Feather_Base_Controller' => path('core') . 'controllers' . DS . 'base' . EXT
 ));
