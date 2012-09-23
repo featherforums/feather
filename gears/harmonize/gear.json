@@ -1,0 +1,12 @@
+{
+	"name":"Harmonize",
+	"description":"A Laravel application integration gear that allows Single Sign On.",
+	"version":"1.0.0",
+	"author":
+	{
+		"name":"Jason Lewis",
+		"email":"jason.lewis1991@gmail.com",
+		"website":"http://jasonlewis.me"
+	},
+	"dependencies":{}
+}
