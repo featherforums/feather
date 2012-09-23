@@ -89,21 +89,28 @@ return array(
 		{
 			$feather['crumbs'] = $feather->share(function($feather)
 			{
-				return new Feather\Components\Support\Crumbs($feather);
+				return new Feather\Components\Support\Breadcrumbs($feather);
 			});
 		},
 		'validator' => function($feather)
 		{
-			$feather['validator'] = $feather->share(function($feather)
+			$feather['validator'] = function($feather)
 			{
-				return new Feather\Components\Support\Validation($feather);
-			});
+				return new Feather\Components\Validation\Validator($feather);
+			};
 		},
 		'date' => function($feather)
 		{
 			$feather['date'] = function($feather)
 			{
 				return new Feather\Components\Support\Date($feather);
+			};
+		},
+		'paginator' => function($feather)
+		{
+			$feather['paginator'] = function($feather)
+			{
+				return new Feather\Components\Pagination\Paginator($feather);
 			};
 		}
 	),
