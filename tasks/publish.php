@@ -26,7 +26,7 @@ class Feather_Publish_Task {
 	{
 		$publish = empty($parameters) ? null : array_shift($parameters);
 
-		$this->publish($publish, path('gears') . DS, 'plugins');
+		$this->publish($publish, path('gears') . DS, 'gears');
 
 		return true;
 	}
