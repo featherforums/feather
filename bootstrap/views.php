@@ -1,9 +1,11 @@
 <?php namespace Feather;
 
 use Str;
+use HTML;
 use View;
 use Asset;
 use Event;
+use Blade;
 use Bundle;
 
 /*
@@ -106,3 +108,98 @@ $defaults = function($view)
 
 View::composer('feather core::template', $defaults);
 View::composer('feather admin::template', $defaults);
+
+/*
+|--------------------------------------------------------------------------
+| Blade Variable Assignment
+|--------------------------------------------------------------------------
+|
+| Assign variables within Blade.
+|
+*/
+
+Blade::extend(function($value)
+{
+	return preg_replace('/(\s*)@assign\s*\(\$(.*), (.*)\)(\s*)/', '$1<?php $$2 = $3; ?>$4', $value);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Blade Events
+|--------------------------------------------------------------------------
+|
+| Fire custom Gear events.
+|
+*/
+
+Blade::extend(function($value)
+{
+	$matcher = Blade::matcher('event');
+
+	return preg_replace($matcher, '$1<?php echo Feather\Gear::fire$2; ?>', $value);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Blade Inline Errors
+|--------------------------------------------------------------------------
+|
+| Display inline errors for a specific form element.
+|
+*/
+
+Blade::extend(function($value)
+{
+	$matcher = Blade::matcher('error');
+
+	return preg_replace($matcher, '$1<?php echo $errors->has$2 ? view("feather core::error.inline", array("error" => $errors->first$1)) : null; ?>', $value);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Blade Errors
+|--------------------------------------------------------------------------
+|
+| Display all errors for a form.
+|
+*/
+
+Blade::extend(function($value)
+{
+	$matcher = Blade::matcher('errors');
+
+	return preg_replace($matcher, '$1<?php echo $errors->all() ? view("feather core::error.page", array("errors" => $errors->all())) : null; ?>', $value);
+});
+
+/*
+|--------------------------------------------------------------------------
+| HTML::link_to_new_discussion() Macro
+|--------------------------------------------------------------------------
+|
+| Custom HTML macro to link to the new discussion page.
+|
+*/
+
+HTML::macro('link_to_new_discussion', function($title, $attributes = array()) use ($feather)
+{
+	$uri = URI::current();
+
+	if(str_contains($uri, 'place'))
+	{
+		$url = preg_replace('/\/p([0-9]+)/', '', $uri) . (ends_with($uri, 'start') ? null : '/start');
+
+		preg_match('/(\d+)-.*?/', $uri, $matches);
+
+		// If the user cannot start discussions on the selected place, don't show the button.
+		if($feather['auth']->cannot('start: discussions', Feather\Models\Place::find(array_pop($matches))))
+		{
+			return null;
+		}
+	}
+	else
+	{
+		$url = URL::to_route('start.discussion');
+	}
+
+	return HTML::link($url, $title, $attributes);
+});
