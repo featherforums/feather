@@ -16,4 +16,14 @@ class Gear extends Base {
 	 */
 	public static $timestamps = false;
 
+	/**
+	 * Return all gears that have been enabled.
+	 * 
+	 * @return  array
+	 */
+	public static function enabled()
+	{
+		return static::where_enabled(1)->get();
+	}
+
 }

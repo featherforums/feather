@@ -31,9 +31,9 @@
 				<dt></dt>
 				<dd>
 					<label for="rules">
-						{{ Form::checkbox('rules', 1, Input::had('rules'), array('id' => 'rules')) }}
+						{{ Form::checkbox('rules', 1, Input::had('rules'), array('id' => 'rules')) }}&nbsp;
 
-						{{ __('feather core::register.labels.rules.helper', array('link' => HTML::link_to_route('rules', 'community rules', array(), array('class' => 'font-bold popup-ui')))) }}
+						<h4>{{ __('feather core::register.labels.rules.helper', array('link' => HTML::link_to_route('rules', 'community rules', array(), array('class' => 'font-bold popup-ui')))) }}</h4>
 					</label>
 					
 					@error('rules')

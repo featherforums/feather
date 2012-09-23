@@ -73,7 +73,7 @@ return array(
 			'title' => 'Confirm Password'
 		),
 		'rules' => array(
-			'helper' => 'I have read and agree to the :link.'
+			'helper' => 'I\'ve read and agree to the :link.'
 		)
 	)
 	

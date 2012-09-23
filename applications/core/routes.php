@@ -46,4 +46,4 @@ Route::any('(:bundle)/discussion/(:num)-(:any)/edit', array('as' => 'discussion.
 |--------------------------------------------------------------------------
 */
 
-Route::get('(:bundle)/rules', array('as' => 'rules', 'uses' => 'feather::home@rules'));
+Route::get('(:bundle)/rules', array('as' => 'rules', 'uses' => 'feather core::index@rules'));

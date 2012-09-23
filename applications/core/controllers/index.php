@@ -108,33 +108,32 @@ class Feather_Core_Index_Controller extends Feather_Base_Controller {
 	{
 		try
 		{
-			Feather\Validation\Auth\Register::passes(Input::all());
+			$this->validator->get('auth.register')->against(Input::get())->passes();
 		}
 		catch (FeatherValidationException $errors)
 		{
-			return Feather\Redirect::to_self()->with_input()->with_errors($errors->get());
+			return $this->redirect->to_self()->with_input()->with_errors($errors->get());
 		}
 
 		try
 		{
-			$user = Feather\Models\User::register(Input::all());
+			$user = Feather\Core\User::register(Input::get());
 		}
-		catch (FeatherRegistrationException $errors)
+		catch (FeatherModelException $errors)
 		{
-			return Feather\Redirect::to_self()->with_input()->alert('error', 'feather::register.failure');
+			return $this->redirect->to_self()->with_input()->alert('error', 'feather core::register.failure');
 		}
 		
 		// Users must confirm their e-mail address once they have registered. We
 		// will now send them an e-mail with their activation code.
-		if(Feather\Config::get('feather: registration.confirm_email'))
+		if($this->config->get('feather: db.registration.confirm_email'))
 		{
 			
 		}
 
-		// Log the user in and redirect back to the home page.
-		Feather\Auth::login($user->id);
+		$this->auth->login($user);
 
-		return Feather\Redirect::to_previous('route: feather');
+		return $this->redirect->to_previous('route: feather');
 	}
 
 	/**
@@ -144,8 +143,8 @@ class Feather_Core_Index_Controller extends Feather_Base_Controller {
 	 */
 	public function get_rules()
 	{
-		$this->layout->with('title', __('feather::titles.rules'))
-					 ->nest('content', 'feather::misc.rules');
+		$this->layout->with('title', __('feather core::titles.rules'))
+					 ->nest('content', 'feather core::misc.rules');
 	}
 
 }

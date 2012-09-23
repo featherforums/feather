@@ -2,6 +2,7 @@
 
 use Str;
 use Hash;
+use Feather\Config;
 
 class User extends Base {
 
@@ -68,6 +69,47 @@ class User extends Base {
 	public function get_avatar()
 	{
 		return 'http://www.gravatar.com/avatar/' . md5(strtolower(trim($this->get_attribute('email'))));
+	}
+
+	/**
+	 * Register a new user and return the new user object. 
+	 * 
+	 * @param  array   $input
+	 * @param  bool    $activated
+	 * @return object
+	 */
+	public static function register($input)
+	{
+		$user = new static(array(
+			'username' => $input['username'],
+			'password' => $input['password'],
+			'email'	   => $input['email']
+		));
+
+		if(Config::get('feather: db.registration.confirm_email'))
+		{
+			$user->fill(array(
+				'activation_key' => Str::random(30),
+				'activated'		 => 0
+			));
+		}
+
+		if(!$user->save())
+		{
+			throw new FeatherModelException;
+		}
+
+		// Attach the users role. If the user needs to confirm their e-mail address they are given
+		// the confirming role status which has an ID of 4. If not then they receive the standard
+		// member role which has an ID of 2.
+		$user->roles()->attach(Config::get('feather: db.registration.confirm_email') ? 4 : 2);
+
+		return $user;
+	}
+
+	public static function edit($user, $input)
+	{
+
 	}
 
 }
