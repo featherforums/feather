@@ -75,7 +75,7 @@ class Validator extends Component {
 
 		if(file_exists($path = path('applications') . $this->application . DS . 'validation' . DS . $segments[0] . EXT))
 		{
-			if($this->validating[$validator] = array_get(require $path, implode('.', array_slice($segments, 1))))
+			if($this->validating[$validator] = array_get(require $path, implode('.', array_slice($segments, 1)) ?: null))
 			{
 				return $this;
 			}
