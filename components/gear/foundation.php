@@ -5,6 +5,13 @@ use Event;
 abstract class Foundation {
 
 	/**
+	 * The feather instance.
+	 * 
+	 * @var Feather\Components\Foundation\Application
+	 */
+	protected $feather;
+
+	/**
 	 * Listen for an event and fire a method or closure handler.
 	 * 
 	 * @param  string          $event
@@ -85,5 +92,16 @@ abstract class Foundation {
 	 * @return void
 	 */
 	public function remove(){}
+
+	/**
+	 * Set the Feather application instance.
+	 * 
+	 * @param  Feather\Components\Foundation\Application  $feather
+	 * @return void
+	 */
+	public function application(\Feather\Components\Foundation\Application $feather)
+	{
+		$this->feather = $feather;
+	}
 
 }
