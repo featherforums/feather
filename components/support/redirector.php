@@ -3,6 +3,7 @@
 use URL;
 use URI;
 use Input;
+use Bundle;
 use Request;
 use Redirect;
 use Feather\Auth;
@@ -68,9 +69,9 @@ class Redirector extends Redirect {
 	 * 
 	 * @return object
 	 */
-	public static function after_logout()
+	public function after_logout()
 	{
-		return $this->for_auth(Config::get('feather: auth.logout_url'));
+		return $this->for_auth(Config::get('feather: db.auth.logout_url'));
 	}
 
 	/**
@@ -78,9 +79,9 @@ class Redirector extends Redirect {
 	 * 
 	 * @return object
 	 */
-	public static function before_register()
+	public function before_register()
 	{
-		return $this->for_auth(Config::get('feather: auth.register_url'));
+		return $this->for_auth(Config::get('feather: db.auth.register_url'));
 	}
 
 	/**
@@ -88,9 +89,9 @@ class Redirector extends Redirect {
 	 * 
 	 * @return object
 	 */
-	public static function before_login()
+	public function before_login()
 	{
-		return $this->for_auth(Config::get('feather: auth.login_url'));
+		return $this->for_auth(Config::get('feather: db.auth.login_url'));
 	}
 
 	/**
@@ -107,7 +108,7 @@ class Redirector extends Redirect {
 			'{token}'	=> Auth::online() ? Auth::user()->authenticator_token : null
 		);
 
-		if(Config::get('feather: auth.driver') == 'internal')
+		if(Config::get('feather: db.auth.driver') == 'internal')
 		{
 			$url = URL::to_route('feather');
 		}
