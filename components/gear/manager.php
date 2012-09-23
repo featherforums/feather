@@ -4,7 +4,7 @@ use Str;
 use Event;
 use Request;
 use FilesystemIterator;
-use Feather\Models\Gear;
+use Feather\Core\Gear;
 use InvalidArgumentException;
 use Feather\Components\Foundation\Component;
 
