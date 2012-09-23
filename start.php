@@ -25,17 +25,6 @@ set_path('themes', path('feather') . 'themes' . DS);
 
 /*
 |--------------------------------------------------------------------------
-| Feather Exceptions
-|--------------------------------------------------------------------------
-|
-| Load in Feather's Exception Classes
-|
-*/
-
-require path('feather') . 'exceptions' . EXT;
-
-/*
-|--------------------------------------------------------------------------
 | Core Autoloading
 |--------------------------------------------------------------------------
 |
@@ -82,6 +71,19 @@ $feather['config']->db();
 
 /*
 |--------------------------------------------------------------------------
+| Load Feather Bootstrapping
+|--------------------------------------------------------------------------
+|
+| We can now bootstrap the remaining items.
+|
+*/
+
+require path('feather') . 'bootstrap' . DS . 'views' . EXT;
+
+require path('feather') . 'bootstrap' . DS . 'exceptions' . EXT;
+
+/*
+|--------------------------------------------------------------------------
 | Load Feather Components
 |--------------------------------------------------------------------------
 |
@@ -89,14 +91,13 @@ $feather['config']->db();
 |
 */
 
-foreach($feather['config']->get('feather: feather.components') as $component => $closure)
+foreach($feather['config']->get('feather: feather.components') as $component => $resolver)
 {
-	if(is_callable($closure))
+	if(is_callable($resolver))
 	{
-		$closure($feather);
+		$resolver($feather);
 	}
 }
-
 
 /*
 |--------------------------------------------------------------------------
@@ -127,13 +128,25 @@ foreach($feather['config']->get('feather: feather.applications') as $application
 {
 	$handles = str_replace('(:feather)', Bundle::option('feather', 'handles'), $handles);
 
-	Bundle::register("feather/{$application}", array(
+	Bundle::register("feather {$application}", array(
 		'handles'  => $handles,
 		'location' => "feather/applications/{$application}"
 	));
 
-	starts_with(Request::uri(), $handles) and Bundle::start("feather/{$application}");
+	starts_with(Request::uri(), $handles) and Bundle::start("feather {$application}");
 }
+
+/*
+|--------------------------------------------------------------------------
+| Bootstrap Authentication
+|--------------------------------------------------------------------------
+|
+| Authentication needs to be bootstrapped so that we have the correct
+| auth driver set, any authenticators are registered, and the user is set.
+|
+*/
+
+$feather['auth']->bootstrap();
 
 /*
 |--------------------------------------------------------------------------
