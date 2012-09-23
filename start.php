@@ -1,5 +1,6 @@
 <?php namespace Feather;
 
+use IoC;
 use Bundle;
 use Request;
 use Autoloader;
@@ -33,7 +34,9 @@ set_path('themes', path('feather') . 'themes' . DS);
 */
 
 Autoloader::namespaces(array(
-	'Feather' => path('feather')
+	'Feather\\Core'  => path('core') . 'models',
+	'Feather\\Admin' => path('admin') . 'models',
+	'Feather'		 => path('feather')
 ));
 
 /*
@@ -82,6 +85,8 @@ require path('feather') . 'bootstrap' . DS . 'views' . EXT;
 
 require path('feather') . 'bootstrap' . DS . 'exceptions' . EXT;
 
+require path('feather') . 'bootstrap' . DS . 'ioc' . EXT;
+
 /*
 |--------------------------------------------------------------------------
 | Load Feather Components
@@ -115,6 +120,18 @@ require path('feather') . 'facades' . EXT;
 
 /*
 |--------------------------------------------------------------------------
+| Bootstrap Authentication
+|--------------------------------------------------------------------------
+|
+| Authentication needs to be bootstrapped so that we have the correct
+| auth driver set, any authenticators are registered, and the user is set.
+|
+*/
+
+$feather['auth']->bootstrap();
+
+/*
+|--------------------------------------------------------------------------
 | Register Feather Applications
 |--------------------------------------------------------------------------
 |
@@ -126,27 +143,15 @@ require path('feather') . 'facades' . EXT;
 
 foreach($feather['config']->get('feather: feather.applications') as $application => $handles)
 {
-	$handles = str_replace('(:feather)', Bundle::option('feather', 'handles'), $handles);
+	$handles = trim(str_replace('(:feather)', Bundle::option('feather', 'handles'), $handles), '/');
 
 	Bundle::register("feather {$application}", array(
 		'handles'  => $handles,
 		'location' => "feather/applications/{$application}"
 	));
 
-	starts_with(Request::uri(), $handles) and Bundle::start("feather {$application}");
+	starts_with(Request::uri(), $handles ?: Request::uri()) and Bundle::start("feather {$application}");
 }
-
-/*
-|--------------------------------------------------------------------------
-| Bootstrap Authentication
-|--------------------------------------------------------------------------
-|
-| Authentication needs to be bootstrapped so that we have the correct
-| auth driver set, any authenticators are registered, and the user is set.
-|
-*/
-
-$feather['auth']->bootstrap();
 
 /*
 |--------------------------------------------------------------------------
@@ -165,3 +170,31 @@ if(Request::cli())
 
 	with(new \Mockery\Loader)->register();
 }
+
+/*
+|--------------------------------------------------------------------------
+| Theme Development Mode
+|--------------------------------------------------------------------------
+|
+| When not running via the CLI and theme development mode is on we'll
+| publish all the themes related assets.
+|
+*/
+if($feather['config']->get('feather: db.forum.theme_development_mode') and !Request::cli())
+{
+	$publisher = IoC::resolve('feather: publisher');
+
+	ob_start() and $publisher->theme((array) $feather['config']->get('feather: db.forum.theme')) and ob_clean();
+}
+
+/*
+|--------------------------------------------------------------------------
+| Theme Bootstrap
+|--------------------------------------------------------------------------
+|
+| Because themes are registered as a Laravel bundle they can contain a
+| start script to register any theme related assets with the container.
+|
+*/
+
+Bundle::start('feather theme');
