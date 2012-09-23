@@ -9,57 +9,48 @@ class ValidationTest extends PHPUnit_Framework_TestCase {
 		$this->feather = Feather\Components\Support\Facade::application();
 	}
 
-	public function tearDown()
-	{
-		$this->feather['validator']->app('core');
-
-		$this->feather['validator']->rules = array();
-
-		$this->feather['validator']->messages = array();
-	}
-
 	public function testCanChangeApplication()
 	{
-		$this->feather['validator']->app('cat');
+		$validator = $this->feather['validator']->app('cat');
 
-		$this->assertEquals('cat', $this->feather['validator']->application);
+		$this->assertEquals('cat', $validator->application);
 	}
 
 	public function testCanValidateAgainstInput()
 	{
-		$this->feather['validator']->against(array('foo' => 'bar'));
+		$validator = $this->feather['validator']->against(array('foo' => 'bar'));
 
-		$this->assertEquals(array('foo' => 'bar'), $this->feather['validator']->input);
+		$this->assertEquals(array('foo' => 'bar'), $validator->input);
 	}
 
 	public function testCanSetCustomData()
 	{
-		$this->feather['validator']->with('foo', 'bar');
+		$validator = $this->feather['validator']->with('foo', 'bar');
 
-		$this->assertEquals(array('foo' => 'bar'), $this->feather['validator']->data);
+		$this->assertEquals(array('foo' => 'bar'), $validator->data);
 	}
 
 	public function testCanLoadValidatorClosure()
 	{
 		$this->feather['config']->set('feather: validation.test', function($validator){});
 
-		$this->feather['validator']->get('test');
+		$validator = $this->feather['validator']->get('test');
 
-		$this->assertArrayHasKey('test', $this->feather['validator']->validating);
+		$this->assertArrayHasKey('test', $validator->validating);
 	}
 
 	public function testCanAddRule()
 	{
-		$this->feather['validator']->rule('cat', 'dog');
+		$validator = $this->feather['validator']->rule('cat', 'dog');
 
-		$this->assertEquals(array('cat' => array('dog')), $this->feather['validator']->rules);
+		$this->assertEquals(array('cat' => array('dog')), $validator->rules);
 	}
 
 	public function testCanAddMessage()
 	{
-		$this->feather['validator']->message('cat', 'dog');
+		$validator = $this->feather['validator']->message('cat', 'dog');
 
-		$this->assertEquals(array('cat' => 'core::dog'), $this->feather['validator']->messages);
+		$this->assertEquals(array('cat' => 'core::dog'), $validator->messages);
 	}
 
 	public function testValidationDoesPass()
