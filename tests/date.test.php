@@ -36,7 +36,7 @@ class DateTest extends PHPUnit_Framework_TestCase {
 
 	public function testCanGetFuzzyDate()
 	{
-		$this->assertEquals('1 day ago', $this->feather['date']->set('Yesterday')->fuzzy());
+		$this->assertEquals('0 seconds ago', $this->feather['date']->set('Now')->fuzzy());
 	}
 
 }
