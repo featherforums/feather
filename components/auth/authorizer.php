@@ -4,9 +4,9 @@ use Auth;
 use Route;
 use Session;
 use InvalidArgumentException;
-use Feather\Components\Foundation;
+use Feather\Components\Foundation\Component;
 
-class Authorizer extends Foundation\Component {
+class Authorizer extends Component {
 
 	/**
 	 * The current logged in user.
@@ -16,15 +16,12 @@ class Authorizer extends Foundation\Component {
 	public $user;
 
 	/**
-	 * Overload the constructor, bootstrap the authenticator.
+	 * Bootstrap the authenticator.
 	 * 
-	 * @param  Feather\Components\Foundation\Application  $feather
 	 * @return void
 	 */
-	public function __construct(Foundation\Application $feather)
+	public function bootstrap()
 	{
-		parent::__construct($feather);
-
 		Auth::extend('feather', function()
 		{
 			return new Driver;
