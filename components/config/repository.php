@@ -248,6 +248,15 @@ class Repository extends Foundation\Component {
 
 		list($prefix, $key) = explode(': ', $key);
 
+		// Applications can refer to their own configuration files the same way that
+		// they are registered with Feather.
+		if(str_contains($prefix, ' '))
+		{
+			list(, $app) = explode(' ', $prefix);
+
+			$prefix = 'app';
+		}
+
 		switch($prefix)
 		{
 			// The feather prefix is applied to both database and file-based
@@ -263,6 +272,19 @@ class Repository extends Foundation\Component {
 
 				return "feather::gear:{$gear} {$key}";
 			break;
+
+			// The theme prefix is applied to Feather themes, the theme
+			// name should appear before the file and key to be used.
+			case 'theme':
+				list($theme, $key) = explode(' ', $key);
+
+				return "feather::theme:{$theme} {$key}";
+			break;
+
+			case 'app':
+				return "feather {$app}::{$key}";
+			break;
+
 			default:
 				return $key;
 		}
