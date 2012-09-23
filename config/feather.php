@@ -80,10 +80,10 @@ return array(
 		},
 		'redirect' => function($feather)
 		{
-			$feather['redirect'] = $feather->share(function($feather)
+			$feather['redirect'] = function($feather)
 			{
-				return new Feather\Components\Foundation\Redirector(null);
-			});
+				return new Feather\Components\Support\Redirector(null);
+			};
 		},
 		'crumbs' => function($feather)
 		{

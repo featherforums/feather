@@ -1,4 +1,4 @@
-<?php namespace Feather\Components\Foundation;
+<?php namespace Feather\Components\Support;
 
 use URL;
 use URI;
