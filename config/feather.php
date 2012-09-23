@@ -85,9 +85,9 @@ return array(
 				return new Feather\Components\Support\Redirector(null);
 			};
 		},
-		'crumbs' => function($feather)
+		'breadcrumbs' => function($feather)
 		{
-			$feather['crumbs'] = $feather->share(function($feather)
+			$feather['breadcrumbs'] = $feather->share(function($feather)
 			{
 				return new Feather\Components\Support\Breadcrumbs($feather);
 			});

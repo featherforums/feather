@@ -44,14 +44,14 @@ class Gear extends Components\Support\Facade {
 
 }
 
-class Crumbs extends Components\Support\Facade {
+class Breadcrumbs extends Components\Support\Facade {
 
 	/**
 	 * Gets the name of the facade component.
 	 * 
 	 * @return string
 	 */
-	protected static function accessor(){ return 'crumbs'; }
+	protected static function accessor(){ return 'breadcrumbs'; }
 
 }
 
