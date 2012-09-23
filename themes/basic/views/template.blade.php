@@ -4,7 +4,7 @@
 
 	<head>
 		<title>
-			@event('view: before template.title') {{ $title }} &ndash; {{ $app->title }}
+			@event('view: before template.title') {{ $title }} &ndash; {{ $feather->title }}
 		</title>
 
 		{{ Asset::container('theme')->styles() }}
@@ -22,9 +22,9 @@
 
 				<div class="user">
 					@if(Feather\Auth::online())
-						@include('feather::menus.user')
+						@include('core::menu.user')
 					@else
-						@include('feather::menus.guest')
+						@include('core::menu.guest')
 					@endif
 				</div>
 
