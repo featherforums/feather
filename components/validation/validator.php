@@ -71,12 +71,22 @@ class Validator extends Component {
 	 */
 	public function get($validator)
 	{
-		if(!$this->validating[$validator] = $this->feather['config']->get("feather {$this->application}: validation.{$validator}"))
+		$segments = explode('.', $validator);
+
+		if(file_exists($path = path('applications') . $this->application . DS . 'validation' . DS . $segments[0] . EXT))
 		{
-			throw new InvalidArgumentException("Invalid validator [{$validator}] supplied.");
+			if($this->validating[$validator] = array_get(require $path, implode('.', array_slice($segments, 1))))
+			{
+				return $this;
+			}
 		}
 
-		return $this;
+		if($this->validating[$validator] = $this->feather['config']->get("feather {$this->application}: validation.{$validator}"))
+		{
+			return $this;
+		}
+
+		throw new InvalidArgumentException("Invalid validator [{$validator}] supplied.");
 	}
 
 	/**
@@ -101,7 +111,7 @@ class Validator extends Component {
 	{		
 		// If a response is returned from the closure then we have a custom error messages
 		// to throw with the exception. 
-		if($responses = call_user_func(reset($this->validating), $this))
+		if($responses = call_user_func_array(reset($this->validating), array($this)))
 		{
 			if(!is_array(reset($responses))) $responses = array(array_shift($responses) => array());
 
