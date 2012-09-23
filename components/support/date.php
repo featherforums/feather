@@ -73,7 +73,9 @@ class Date extends Component {
 	 */
 	public function meta($date)
 	{
-		return '<span title="' . $this->show('long') . '">' . $date->relative('short') . '</span>';
+		$this->set($date);
+
+		return '<span title="' . $this->show('long') . '">' . $this->relative('short') . '</span>';
 	}
 
 	/**
