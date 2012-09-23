@@ -71,11 +71,11 @@ class Feather_Core_Index_Controller extends Feather_Base_Controller {
 	 */
 	public function get_logout()
 	{
-		Feather\Auth::logout();
+		$this->auth->logout();
 
 		// Return to the generated logout URL, this can change depending on the authentication
 		// driver that is being used.
-		return Feather\Redirect::after_logout();
+		return $this->redirect->after_logout();
 	}
 
 	/**
@@ -86,15 +86,15 @@ class Feather_Core_Index_Controller extends Feather_Base_Controller {
 	 */
 	public function get_register()
 	{
-		if(Feather\Config::get('feather: auth.driver', 'internal') != 'internal')
+		if($this->config->get('feather: db.auth.driver', 'internal') != 'internal')
 		{
-			return Feather\Redirect::before_register();
+			return $this->redirect->before_register();
 		}
 
-		Feather\Breadcrumbs::drop(__('feather::titles.register'));
+		$this->breadcrumbs->drop(__('feather core::titles.register'));
 
-		$this->layout->with('title', __('feather::titles.register'))
-					 ->nest('content', 'feather::user.register');
+		$this->layout->with('title', __('feather core::titles.register'))
+					 ->nest('content', 'feather core::user.register');
 	}
 
 	/**
