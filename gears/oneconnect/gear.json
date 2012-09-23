@@ -1,0 +1,12 @@
+{
+	"name":"OneConnect",
+	"description":"A Single Sign On gear to connect your application to your Feather installation.",
+	"version":"1.0.0",
+	"author":
+	{
+		"name":"Jason Lewis",
+		"email":"jason.lewis1991@gmail.com",
+		"website":"http://jasonlewis.me"
+	},
+	"dependencies":{}
+}
