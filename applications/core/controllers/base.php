@@ -127,7 +127,7 @@ class Feather_Base_Controller extends Controller {
 	{
 		if(isset($this->feather[$component]))
 		{
-			return $tihs->feather[$component];
+			return $this->feather[$component];
 		}
 
 		throw new BadMethodCallException('Invalid component [{$component}] called on controller.');
