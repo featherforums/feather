@@ -1,6 +1,8 @@
 <?php namespace Feather\Components\Gear;
 
+use Str;
 use Event;
+use Request;
 use FilesystemIterator;
 use Feather\Models\Gear;
 use InvalidArgumentException;
@@ -183,6 +185,21 @@ class Manager extends Component {
 	public function first($event, $parameters = array())
 	{
 		return Event::first($event, $parameters);
+	}
+
+	/**
+	 * Fire the first controller event in the queue.
+	 * 
+	 * @param  object  $controller
+	 * @return mixed
+	 */
+	public function controller($event, $controller)
+	{
+		$route = Request::route();
+
+		$method = Str::lower($route->method);
+
+		return Event::first("controller: {$event} {$route->controller}@{$method}.{$route->controller_action}", array(array($controller)));
 	}
 
 }
