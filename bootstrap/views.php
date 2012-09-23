@@ -1,5 +1,7 @@
 <?php namespace Feather;
 
+use URI;
+use URL;
 use Str;
 use HTML;
 use View;
@@ -191,7 +193,7 @@ HTML::macro('link_to_new_discussion', function($title, $attributes = array()) us
 		preg_match('/(\d+)-.*?/', $uri, $matches);
 
 		// If the user cannot start discussions on the selected place, don't show the button.
-		if($feather['auth']->cannot('start: discussions', Feather\Models\Place::find(array_pop($matches))))
+		if($feather['auth']->cannot('start: discussions', Core\Place::find(array_pop($matches))))
 		{
 			return null;
 		}
