@@ -345,7 +345,8 @@ fieldset dd:after,
  */
 .body h1,
 .body h2,
-.body h3 {
+.body h3,
+.body h4 {
 	margin: 0 0 16px;
 	font-family: "Trebuchet MS", "Ubuntu", serif;
 	font-size: 24px;
@@ -355,6 +356,10 @@ fieldset dd:after,
 
 .body h2 { font-size: 20px; }
 .body h3 { font-size: 18px; }
+.body h4 {
+	font-size: 14px;
+	display: inline;
+}
 
 .body h1 a,
 .body h2 a {
