@@ -10,9 +10,9 @@ class Feather_Core_Index_Controller extends Feather_Base_Controller {
 	 */
 	public function get_index()
 	{
-		//$places = Feather\Models\Place::overview($this->feather['config']->get('feather: db.overview.discussions_per_place'));
+		$places = Feather\Core\Place::index($this->config->get('feather: db.overview.discussions_per_place'));
 
-		$this->layout->nest('content', 'core::index.overview');
+		$this->layout->nest('content', 'feather core::index.home', compact('places'));
 	}
 
 	/**
@@ -23,7 +23,7 @@ class Feather_Core_Index_Controller extends Feather_Base_Controller {
 	 */
 	public function get_login()
 	{
-		if($this->feather['auth']->online())
+		if($this->auth->online())
 		{
 			return $this->redirect->to_route('feather');
 		}

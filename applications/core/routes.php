@@ -1,5 +1,11 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| Feather Homepage
+|--------------------------------------------------------------------------
+*/
+
 Route::get('(:bundle)', array('as' => 'feather', 'uses' => 'feather core::index@index'));
 
 /*
@@ -18,8 +24,8 @@ Route::get('(:bundle)/logout', array('as' => 'logout', 'uses' => 'feather core::
 |--------------------------------------------------------------------------
 */
 
-Route::get('(:bundle)/members', array('as' => 'members', 'uses' => 'feather::members@index'));
-Route::get('(:bundle)/profile/(:any)', array('as' => 'profile', 'uses' => 'feather::profile@index'));
+Route::get('(:bundle)/members', array('as' => 'members', 'uses' => 'feather core::members@index'));
+Route::get('(:bundle)/profile/(:any)', array('as' => 'profile', 'uses' => 'feather core::profile@index'));
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +33,7 @@ Route::get('(:bundle)/profile/(:any)', array('as' => 'profile', 'uses' => 'feath
 |--------------------------------------------------------------------------
 */
 
-Route::get('(:bundle)/place/(:num)-(:any)/(:page?)', array('as' => 'place', 'uses' => 'feather::place@place'));
+Route::get('(:bundle)/place/(:num)-(:any)/(:page?)', array('as' => 'place', 'uses' => 'feather core::place@place'));
 
 /*
 |--------------------------------------------------------------------------
@@ -35,10 +41,10 @@ Route::get('(:bundle)/place/(:num)-(:any)/(:page?)', array('as' => 'place', 'use
 |--------------------------------------------------------------------------
 */
 
-Route::any('(:bundle)/discussion/start', array('as' => 'start.discussion', 'uses' => 'feather::discussion@start'));
-Route::any('(:bundle)/place/(:num)-(:any)/start', 'feather::discussion@start');
-Route::any('(:bundle)/discussion/(:num)-(:any)/(:page?)', array('as' => 'discussion', 'uses' => 'feather::discussion@index'));
-Route::any('(:bundle)/discussion/(:num)-(:any)/edit', array('as' => 'discussion.edit', 'uses' => 'feather::discussion@edit'));
+Route::any('(:bundle)/discussion/start', array('as' => 'start.discussion', 'uses' => 'feather core::discussion@start'));
+Route::any('(:bundle)/place/(:num)-(:any)/start', 'feather core::discussion@start');
+Route::any('(:bundle)/discussion/(:num)-(:any)/(:page?)', array('as' => 'discussion', 'uses' => 'feather core::discussion@index'));
+Route::any('(:bundle)/discussion/(:num)-(:any)/edit', array('as' => 'discussion.edit', 'uses' => 'feather core::discussion@edit'));
 
 /*
 |--------------------------------------------------------------------------
