@@ -16,5 +16,5 @@ return array(
 	'rules'				   => 'Rules',
 	'connect_to_community' => 'Connect to Community',
 	'start_discussion'	   => 'Start Discussion',
-	'edit_discussion'	   => 'Edit Discussion'
+	'edit_discussion'	   => 'Editing Discussion: :discussion'
 );

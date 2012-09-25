@@ -11,7 +11,7 @@ use Feather\Components\Gear\Foundation;
 class Recaptcha extends Foundation {
 
 	/**
-	 * Register the event listeners for the reCAPTCHA plugin.
+	 * Register the event listeners for the reCAPTCHA gear.
 	 * 
 	 * @return void
 	 */

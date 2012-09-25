@@ -9,6 +9,7 @@ use Asset;
 use Event;
 use Blade;
 use Bundle;
+use Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -105,7 +106,7 @@ $defaults = function($view)
 {
 	if(!isset($view->title)) $view->title = 'Index';
 
-	if(!isset($view->alert)) $view->alert = null;
+	if(!isset($view->alert)) $view->alert = Session::has('alert') ? (object) Session::get('alert') : null;
 };
 
 View::composer('feather core::template', $defaults);
@@ -188,14 +189,14 @@ HTML::macro('link_to_new_discussion', function($title, $attributes = array()) us
 
 	if(str_contains($uri, 'place'))
 	{
-		$url = preg_replace('/\/p([0-9]+)/', '', $uri) . (ends_with($uri, 'start') ? null : '/start');
+		$url = preg_replace('/\/p[0-9]+/', '', $uri) . (ends_with($uri, 'start') ? null : '/start');
 
 		preg_match('/(\d+)-.*?/', $uri, $matches);
 
 		// If the user cannot start discussions on the selected place, don't show the button.
 		if($feather['auth']->cannot('start: discussions', Core\Place::find(array_pop($matches))))
 		{
-			return null;
+			$url = URL::to_route('start.discussion');
 		}
 	}
 	else

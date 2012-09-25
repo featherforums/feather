@@ -1,0 +1,49 @@
+.splendid-container {
+	float: left;
+	margin: 0 0 8px;
+}
+
+.splendid-container li {
+	float: left;
+	width: 16px;
+	height: 16px;
+	padding: 6px;
+	border: 1px solid #dcdcdc;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	background-color: #f2f2f2;
+	margin: 0 4px 0 0;
+	text-indent: -9999px;
+	cursor: pointer;
+}
+
+.splendid-container li:hover {
+	border-color: #d1d1d1;
+}
+
+.splendid-container li > a {
+	display: block;
+	background: url('../img/sprites.png') no-repeat 0 0;
+	width: 16px;
+	height: 16px;
+}
+
+.splendid-container li.h2 > a { background-position: -16px 0; }
+.splendid-container li.h3 > a { background-position: -32px 0; }
+.splendid-container li.h4 > a { background-position: -48px 0; }
+.splendid-container li.h5 > a { background-position: -64px 0; }
+.splendid-container li.h6 > a { background-position: -80px 0; }
+.splendid-container li.ol > a { background-position: -96px 0; }
+.splendid-container li.ul > a { background-position: -112px 0; }
+.splendid-container li.quote > a { background-position: -128px 0; }
+.splendid-container li.italic > a { background-position: -144px 0; }
+.splendid-container li.bold > a { background-position: -160px 0; }
+.splendid-container li.code > a { background-position: -176px 0; }
+.splendid-container li.picture > a { background-position: -192px 0; }
+.splendid-container li.link > a { background-position: -208px 0; }
+.splendid-container li.preview > a { background-position: -224px 0; }
+
+.discussion-textarea textarea {
+	clear: both;
+}

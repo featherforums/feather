@@ -3,6 +3,7 @@
 use DB;
 use Cache;
 use Feather\Auth;
+use Feather\Paginator;
 
 class Place extends Ness {
 
@@ -27,7 +28,7 @@ class Place extends Ness {
 	 */
 	public function permissions()
 	{
-		return $this->has_many('Feather\\Models\\Permission', 'place_id');
+		return $this->has_many('Feather\\Core\\Permission', 'place_id');
 	}
 
 	/**
@@ -37,7 +38,7 @@ class Place extends Ness {
 	 */
 	public function moderators()
 	{
-		return $this->has_many('Feather\\Models\\Place\\Moderator', 'place_id');
+		return $this->has_many('Feather\\Core\\Place\\Moderator', 'place_id');
 	}
 
 	/**
@@ -47,7 +48,7 @@ class Place extends Ness {
 	 */
 	public function discussions()
 	{
-		return $this->has_many('Feather\\Models\\Discussion', 'place_id');
+		return $this->has_many('Feather\\Core\\Discussion', 'place_id');
 	}
 
 	/**
@@ -73,6 +74,82 @@ class Place extends Ness {
 		}, static::cache_time);
 	}
 
+	/**
+	 * Select only one place and limit the number of discussions per page.
+	 * 
+	 * @param  int  $id
+	 * @param  int  $discussions_per_page
+	 * @return Feather\Core\Place
+	 */
+	public static function one($id, $discussions_per_page = 20)
+	{
+		$place = Cache::remember("place_{$id}", function() use ($id)
+		{
+			$table = DB::connection(FEATHER_DATABASE)->config['prefix'] . Place::$table;
+
+			$sql = "SELECT node.*, (COUNT( parent.name ) -1) AS depth
+				FROM {$table} AS node
+				CROSS JOIN places AS parent
+				WHERE node.id = {$id}
+				AND node.lft BETWEEN parent.lft
+				AND parent.rgt
+				GROUP BY node.id
+				ORDER BY node.lft";
+
+			$place = Place::enrichment(DB::connection(FEATHER_DATABASE)->query($sql));
+
+			return reset($place);
+		}, static::cache_time);
+
+		$places = static::filter_by_permissions(array($place->id => $place) + static::enrichment($place->children()));
+
+		list($sorted, $pivot) = static::sort($places);
+
+		// Tally the total number of discussions within each place.
+		$totals = static::tally_discussions($places);
+
+		$page = Paginator::page($total_results = array_sum($totals), $discussions_per_page);
+
+		$skip = ($page - 1) * $discussions_per_page;
+
+		// With our paginator variables we can now select only the discussions we want from the database.
+		$discussions = !$places ? array() : Discussion::where_in('place_id', array_keys($places))
+			->order_by('updated_at', 'desc')
+			->skip($skip)
+			->take($discussions_per_page)
+			->get();
+
+		if($discussions)
+		{
+			$discussions = Discussion::enrichment($discussions, array('author', 'recent', 'participants'));
+		}
+
+		$places = static::refine($discussions, $places, $sorted, $pivot, $totals, $discussions_per_page);
+
+		if(empty($places))
+		{
+			return array();
+		}
+
+		$place = reset($places);
+
+		// Create a new paginator instance. We get the current page from the total amount of discussions.
+		// We'll then extract a slice from the discussions array based on the offset amount and the amount per page.
+		$pagination = Paginator::make($place->discussions, $total_results, $discussions_per_page);
+
+		return $place->fill(array(
+			'discussions' => $pagination->results,
+			'pagination'  => $pagination->links()
+		));
+	}
+
+	/**
+	 * Returns an array of places for the index page of Feather. Places will receive a set amount of
+	 * newest discussions from any of the places within the root place.
+	 * 
+	 * @param  int  $discussions_per_place
+	 * @return array
+	 */
 	public static function index($discussions_per_place)
 	{
 		$places = static::filter_by_permissions(static::all());
@@ -90,7 +167,7 @@ class Place extends Ness {
 
 			foreach($place->children as $child) $ids[] = $child->id;
 
-			foreach(Discussion::with(array('author', 'participants'))->where_in('place_id', $ids)->order_by('updated_at', 'desc')->take($discussions_per_place * 3)->get() as $discussion)
+			foreach(Discussion::enrichment(Discussion::where_in('place_id', $ids)->order_by('updated_at', 'desc')->take($discussions_per_place * 3)->get()) as $discussion)
 			{
 				$discussions[] = $discussion;
 			}
@@ -132,7 +209,7 @@ class Place extends Ness {
 			$discussion->place = $places[$discussion->place_id];
 
 			// If the discussions place is a child then we need to use it's parent ID.
-			$id = $discussion->place->child ? $discussion->place->parent_id : $discussion->place->id;
+			$id = isset($discussion->place->parent_id) ? $discussion->place->parent_id : $discussion->place->id;
 
 			$ordered[$id]["{$discussion->updated_at} {$discussion->id}"] = $discussion;
 
@@ -179,7 +256,7 @@ class Place extends Ness {
 			}
 		}
 
-		foreach($places as $place)
+		foreach($sorted as $place)
 		{
 			$place->discussions = array();
 
@@ -231,9 +308,13 @@ class Place extends Ness {
 	{
 		$sorted = $pivot = array();
 
+		// The gauge is set when the first parent is encountered. Children will then be sorted if their
+		// depth is greater than that of the gauge.
+		$gauge = null;
+
 		foreach($places as $place)
 		{
-			if($place->parent and !$place->depth)
+			if(is_null($gauge) or $place->depth == $gauge)
 			{
 				$sorted[] = $place;
 
@@ -368,6 +449,100 @@ class Place extends Ness {
 		}
 
 		return $enriched;
+	}
+
+	/**
+	 * Returns an HTML select box options list.
+	 * 
+	 * @param  array  $parameters
+	 * @return array
+	 */
+	public static function options($parameters = array())
+	{
+		// Build a default parameters array. I decided to use an array here because a whole bunch of
+		// parameters is just unwieldly. This is somewhat nicer.
+		$parameters = (object) array_merge(array(
+			'places'   	  => null,
+			'disable'  	  => array(),
+			'postable' 	  => false,
+			'cascade'  	  => true,
+			'selected'	  => null,
+			'padder'	  => '---',
+			'permissions' => false,
+			'action'	  => null
+		), $parameters);
+
+		if(is_null($parameters->places))
+		{
+			$parameters->places = static::all();
+		}
+
+		// The disabling variable will store a currently being disabled place. If we are cascading the
+		// disabling, that is, disabling a places children as well, then we'll use this variable to check
+		// if the places are children.
+		$disabling = null;
+
+		// The hiding variable is the same as the disabling variable except it's permission based. If a
+		// user cannot view a place then all children of that place will be hidden as well.
+		$hiding = null;
+
+		$attributes = array(
+			'disabled' => ' disabled="disabled"',
+			'selected' => ' selected="selected"'
+		);
+
+		$callback = function($place) use ($parameters)
+		{
+			return str_pad(" {$place->name}", ($place->depth * strlen($parameters->padder)) + strlen($place->name), $parameters->padder, STR_PAD_LEFT);
+		};
+
+		$options = array();
+
+		foreach($parameters->places as $key => $place)
+		{
+			$disabled = $parameters->postable and !$place->postable ? $attributes['disabled'] : '';
+			$selected = $place->id == $parameters->selected ? $attributes['selected'] : '';
+
+			// If the place is to be disabled then set the disabled attribute. Also sets the cascading
+			// for children if it's enabled. We also check if an action has been passed in and if so run
+			// that through our access control. This is handy for disabling places when starting a discussion.
+			if(in_array($place->id, (array) $parameters->disable) or ($parameters->action and Auth::cannot($parameters->action, $place)))
+			{
+				if($parameters->cascade)
+				{
+					$disabling = $place;
+				}
+
+				$disabled = $attributes['disabled'];
+			}
+
+			// Otherwise if the diasbling variable is an object check to see if the current place is a
+			// child of the originally disabled place, if it is then disable it as well.
+			elseif(is_object($disabling) and $place->lft > $disabling->lft and $place->rgt < $disabling->rgt)
+			{
+				$disabled = $attributes['disabled'];
+			}
+
+			// If the hiding variable is an object check to see if the current place is a child of the
+			// originally hidden place, if it is hide the child as well.
+			elseif(is_object($hiding) and $place->lft > $hiding->lft and $place->rgt < $hiding->rgt)
+			{
+				continue;
+			}
+
+			// If the user cannot view this place then we'll hide it, as well as that, we'll hide
+			// any children of this place.
+			if($parameters->permissions and Auth::cannot('view: place', $place))
+			{
+				$hiding = $place;
+
+				continue;
+			}
+
+			$options[] = '<option value="' . $place->id . '"' . $disabled . $selected . '>' . $callback($place) . '</option>';
+		}
+
+		return implode(PHP_EOL, $options);
 	}
 
 }

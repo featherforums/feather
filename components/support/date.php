@@ -192,11 +192,11 @@ class Date extends Component {
 
 		if($days == 0)
 		{
-			return __('feather::common.today')->get() . ', ' . $this->show('time');
+			return __('feather core::common.today')->get() . ', ' . $this->show('time');
 		}
 		elseif($days == 1)
 		{
-			return __('feather::common.yesterday')->get() . ', ' . $this->show('time');
+			return __('feather core::common.yesterday')->get() . ', ' . $this->show('time');
 		}
 
 		return $this->show($format);

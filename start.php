@@ -4,6 +4,7 @@ use IoC;
 use Bundle;
 use Request;
 use Autoloader;
+use Laravel\Routing\Router;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,17 @@ Autoloader::namespaces(array(
 */
 
 $feather = new Components\Foundation\Application;
+
+/*
+|--------------------------------------------------------------------------
+| Optional Router Placeholders
+|--------------------------------------------------------------------------
+|
+| Register optional router placeholders with the Laravel router.
+|
+*/
+
+Router::$optional['/(:page?)'] = '(?:/p([0-9]+)';
 
 /*
 |--------------------------------------------------------------------------

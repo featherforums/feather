@@ -38,14 +38,7 @@ class Discussion extends Base {
 	 */
 	public function recent()
 	{
-		if($this->last_reply_user_id)
-		{
-			return $this->belongs_to('Feather\\Core\\User', 'last_reply_user_id');
-		}
-		else
-		{
-			return new Nothing;
-		}
+		return $this->belongs_to('Feather\\Core\\User', 'last_reply_user_id');
 	}
 
 	/**
@@ -172,7 +165,7 @@ class Discussion extends Base {
 		$discussion->fill(array(
 			'place_id' => $input['place'],
 			'user_id'  => $input['user'],
-			'title'	   => isset($input['draft']) ? (empty($input['title']) ? 'Untitled Discussion' : $input['title']) : $input['title'],
+			'title'	   => isset($input['draft']) ? (empty($input['title']) ? 'Untitled Discussion' : $input['title']) : (isset($input['title']) ? $input['title'] : $discussion->title),
 			'body'	   => $input['body'],
 			'private'  => empty($input['participants']) ? 0 : 1,
 			'draft'	   => isset($input['draft']) ? 1 : 0
@@ -235,11 +228,11 @@ class Discussion extends Base {
 			// submitted participants for this discussion.
 			if($participants)
 			{
-				Discussion\Participants::where_not_in('user_id', array_keys($participants))->where_discussion_id($discussion->id)->delete();
+				Discussion\Participant::where_not_in('user_id', array_keys($participants))->where_discussion_id($discussion->id)->delete();
 			}
 			else
 			{
-				Discussion\Participants::where_discussion_id($discussion->id)->delete();
+				Discussion\Participant::where_discussion_id($discussion->id)->delete();
 			}
 
 			// Spin through the discussions existing participants and remove them from the
@@ -255,7 +248,7 @@ class Discussion extends Base {
 
 		if($participants)
 		{
-			Discussion\Participants::insert($participants);
+			Discussion\Participant::insert($participants);
 		}
 
 		// Clear the cache for this discussion, as well as the place it belongs, all places,
@@ -269,6 +262,92 @@ class Discussion extends Base {
 		Cache::forget("user_{$discussion->user_id}");
 
 		return $discussion;
+	}
+
+	/**
+	 * Returns an enriched array of discussions with relationships loaded.
+	 * 
+	 * @param  array  $discussions
+	 * @return array
+	 */
+	public static function enrichment($discussions)
+	{
+		if(!is_array($discussions))
+		{
+			$discussions = array($discussions);
+		}
+
+		$ids = array(
+			'participants' => array(),
+			'author'	   => array(),
+			'recent'	   => array()
+		);
+
+		foreach($discussions as $discussion)
+		{
+			$ids['author'][] = $discussion->user_id;
+
+			$ids['participants'][] = $discussion->id;
+
+			if($discussion->last_reply_user_id)
+			{
+				$ids['recent'][] = $discussion->last_reply_user_id;
+			}
+		}
+
+		$ids['author'] = array_unique($ids['author']);
+
+		$ids['recent'] = array_unique($ids['recent']);
+
+		// Here we will run three queries, one to fetch all the authors, another to fetch all the participants
+		// and the last will fetch the last poster details, if any.
+		$authors_raw = User::where_in('id', $ids['author'])->get();
+
+		$participants_raw = Discussion\Participant::with('details')->where_in('discussion_id', $ids['participants'])->get();
+
+		$recently_raw = $ids['recent'] ? User::where_in('id', $ids['recent'])->get() : array();
+
+		// We now need to sort the arrays better, because at the moment accessing objects within the arrays
+		// is very hard. The keys for each array need to be the corrosponding foreign keys for the relationships.
+		$authors = array();
+		foreach($authors_raw as $author) $authors[$author->id] = $author;
+
+		$participants = array();
+		foreach($participants_raw as $participant) $participants[$participant->discussion_id][$participant->id] = $participant;
+
+		$recently = array();
+
+		if($recently_raw)
+		{
+			foreach($recently_raw as $recent) $recently[$recent->id] = $recent;
+		}
+
+		// Now that the arrays are sorted all lovely like we can spin through our discsussions again and
+		// assign the relationships to each discussion.
+		foreach($discussions as $discussion)
+		{
+			$discussion->relationships['author'] = $authors[$discussion->user_id];
+
+			if(isset($participants[$discussion->id]))
+			{
+				$discussion->relationships['participants'] = $participants[$discussion->id];
+			}
+			else
+			{
+				$discussion->relationships['participants'] = null;	
+			}
+
+			if($discussion->last_reply_user_id)
+			{
+				$discussion->relationships['recent'] = $recently[$discussion->last_reply_user_id];
+			}
+			else
+			{
+				$discussion->relationships['recent'] = null;
+			}
+		}
+
+		return $discussions;
 	}
 
 	/**

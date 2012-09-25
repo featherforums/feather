@@ -46,22 +46,22 @@ class Feather_Base_Controller extends Controller {
 	 * Determines if a place is valid, if it is return the place.
 	 * 
 	 * @param  int  $id
-	 * @return Feather\Models\Place
+	 * @return Feather\Core\Place
 	 */
 	protected function place($id)
 	{
-		return is_numeric($id) ? Feather\Models\Place::with('permissions')->find($id) : null;
+		return is_numeric($id) ? Feather\Core\Place::with('permissions')->find($id) : null;
 	}
 
 	/**
 	 * Determines if a discussion is valid, if it is return the discussion.
 	 * 
 	 * @param  int  $id
-	 * @return Feather\Models\Discussion
+	 * @return Feather\Core\Discussion
 	 */
 	protected function discussion($id)
 	{
-		return is_numeric($id) ? Feather\Models\Discussion::with('participants')->find($id) : null;
+		return is_numeric($id) ? Feather\Core\Discussion::with(array('participants', 'participants.details'))->find($id) : null;
 	}
 
 	/**

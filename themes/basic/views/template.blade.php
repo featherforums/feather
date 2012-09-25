@@ -10,7 +10,7 @@
 		{{ Asset::container('theme')->styles() }}
 
 		<script type="text/javascript">
-			var app = { base: '{{ URL::to_route('feather') }}' };
+			var app = { base: '{{ trim(URL::to_route('feather'), '/') }}' };
 		</script>
 	</head>
 

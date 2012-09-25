@@ -2,7 +2,7 @@
 
 use URL;
 use HTML;
-use Feather\Models;
+use Feather\Core;
 use Feather\Components\Foundation\Component;
 
 class Breadcrumbs extends Component {
@@ -18,11 +18,11 @@ class Breadcrumbs extends Component {
 	 * Drop a crumb.
 	 * 
 	 * @param  array|object  $crumb
-	 * @return void
+	 * @return Feather\Components\Support\Breadcrumbs
 	 */
 	public function drop($crumb)
 	{
-		if($crumb instanceof Models\Place)
+		if($crumb instanceof Core\Place)
 		{
 			$this->place($crumb);
 		}
@@ -34,6 +34,10 @@ class Breadcrumbs extends Component {
 			{
 				$crumb = array((string) $crumb);
 			}
+			elseif(!is_array($crumb))
+			{
+				$crumb = array($crumb);
+			}
 
 			// Fetch the title of the crumb and the crumbs link. If the crumb does not have
 			// a supplied link then use the current page.
@@ -43,6 +47,8 @@ class Breadcrumbs extends Component {
 
 			$this->crumbs[] = (object) compact('link', 'title');
 		}
+
+		return $this;
 	}
 
 	/**
@@ -67,7 +73,7 @@ class Breadcrumbs extends Component {
 	/**
 	 * Adds a place to the trail.
 	 * 
-	 * @param  Feather\Models\Place  $place
+	 * @param  Feather\Core\Place  $place
 	 * @return array
 	 */
 	protected function place($place)
@@ -75,13 +81,13 @@ class Breadcrumbs extends Component {
 		// Add each of the ancestors of this place to the crumbs.
 		foreach($place->crumbs() as $crumb)
 		{
-			$this->crumbs[] = array(
+			$this->crumbs[] = (object) array(
 				'link'  => URL::to_route('place', array($crumb->id, $crumb->slug)),
 				'title' => $crumb->name
 			);
 		}
 
-		return $this->crumbs[] = array(
+		return $this->crumbs[] = (object) array(
 			'link'  => URL::to_route('place', array($place->id, $place->slug)),
 			'title' => $place->name
 		);

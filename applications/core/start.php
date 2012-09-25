@@ -24,6 +24,7 @@ $feather = Components\Support\Facade::application();
 */
 
 Autoloader::map(array(
+	'Feather_API_Controller' => path('core') . 'controllers' . DS . 'api' . EXT,
 	'Feather_Base_Controller' => path('core') . 'controllers' . DS . 'base' . EXT
 ));
 

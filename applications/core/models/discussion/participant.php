@@ -18,4 +18,14 @@ class Participant extends Base {
 	 */
 	public static $timestamps = false;
 
+	/**
+	 * A participant has details, this is their user account.
+	 * 
+	 * @return object
+	 */
+	public function details()
+	{
+		return $this->belongs_to('Feather\\Core\\User', 'user_id');
+	}
+
 }
