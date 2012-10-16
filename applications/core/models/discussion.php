@@ -3,6 +3,8 @@
 use DB;
 use Str;
 use Cache;
+use DateTime;
+use Feather\Paginator;
 use FeatherModelException;
 
 class Discussion extends Base {
@@ -59,6 +61,16 @@ class Discussion extends Base {
 	public function participants()
 	{
 		return $this->has_many('Feather\\Core\\Discussion\\Participant', 'discussion_id');
+	}
+
+	/**
+	 * A discussion can have many replies.
+	 * 
+	 * @return object
+	 */
+	public function replies()
+	{
+		return $this->has_many('Feather\\Core\\Reply', 'discussion_id');
 	}
 
 	/**
@@ -151,6 +163,17 @@ class Discussion extends Base {
 		if($discussion->exists)
 		{
 			$increment = $discussion->draft ? (isset($input['draft']) ? false : true) : false;
+
+			// We'll also update the created_at and updated_at timestamps here if it's being
+			// started from a draft. Otherwise an old draft wouldn't be shown at the top of the
+			// discussions list.
+			if(isset($input['start']))
+			{
+				$discussion->fill(array(
+					'created_at' => new DateTime,
+					'updated_at' => new DateTime
+				));
+			}
 		}
 
 		// If the discussion doesn't exist we only increment the total discussions
@@ -301,9 +324,9 @@ class Discussion extends Base {
 
 		// Here we will run three queries, one to fetch all the authors, another to fetch all the participants
 		// and the last will fetch the last poster details, if any.
-		$authors_raw = User::where_in('id', $ids['author'])->get();
+		$authors_raw = $ids['author'] ? User::where_in('id', $ids['author'])->get() : array();
 
-		$participants_raw = Discussion\Participant::with('details')->where_in('discussion_id', $ids['participants'])->get();
+		$participants_raw = $ids['participants'] ? Discussion\Participant::with('details')->where_in('discussion_id', $ids['participants'])->get() : array();
 
 		$recently_raw = $ids['recent'] ? User::where_in('id', $ids['recent'])->get() : array();
 
@@ -348,6 +371,99 @@ class Discussion extends Base {
 		}
 
 		return $discussions;
+	}
+
+	/**
+	 * Builds a discussion bringing in it's replies and all related data. This essentially
+	 * rewrites most of the object since the discussion itself is included as a reply.
+	 * 
+	 * @param  int  $replies_per_page
+	 * @return array
+	 */
+	public function build($replies_per_page = 15)
+	{
+		// Determine what discussions to select. Remembering to include the discussion itself as a reply.
+		// Otherwise our pages would be all messed up.
+		$page = Paginator::page($total_results = $this->replies()->count(), $replies_per_page);
+
+		$skip = ($page - 1) * $replies_per_page;
+
+		// If we are on the first page we need to include the actual discussion, so when selecting the replies
+		// only take the replies per page minus one.
+		$take = ($page == 1) ? ($replies_per_page - 1) : $replies_per_page;
+
+
+
+		// Spin through the replies and build an array of IDs, we need to get some extra details for each of the replies,
+		// such as author, editor, and deleter.
+		$replies = $users = array();
+
+		$ids = array($this->user_id);
+
+		foreach((array) $this->replies()->skip($skip)->take($take)->get() as $reply)
+		{
+			$replies[$reply->id] = $reply;
+
+			$ids[] = $reply->user_id;
+
+			if($reply->edited_id)
+			{
+				$ids[] = $reply->edited_id;
+			}
+
+			if($reply->deleted_id)
+			{
+				$ids[] = $reply->deleted_id;
+			}
+		}
+
+		$ids = array_unique($ids);
+
+		foreach(($ids ? User::where_in('id', $ids)->get() : array()) as $user)
+		{
+			$users[$user->id] = $user;
+		}
+
+		// Add the related user accounts to each reply.
+		foreach($replies as $reply)
+		{
+			$reply->relationships['author'] = $users[$reply->user_id];
+
+			$reply->relationships['deleter'] = $reply->deleted ? $users[$reply->deleted_id] : array();
+
+			$reply->relationships['editor'] = $reply->edited ? $users[$reply->edited_id] : array();
+		}
+
+		if($page == 1)
+		{
+			// We'll turn the discussion into a reply and merge it into the replies, then we'll perform our pagination
+			// of the discussion.
+			$discussion = new Reply(array(
+				'user_id'		=> $this->user_id,
+				'discussion_id' => $this->id,
+				'created_at'	=> $this->created_at,
+				'updated_at'	=> $this->updated_at,
+				'body'			=> $this->body,
+				'deleted'		=> 0,
+				'edited'		=> 0
+			), true);
+
+			$discussion->relationships['author'] = $users[$this->user_id];
+
+			$discussion->relationships['deleter'] = array();
+
+			$discussion->relationships['editor'] = array();
+
+			$replies = array($discussion) + $replies;
+		}
+
+		$pagination = Paginator::make($replies, $total_results, $replies_per_page);
+
+		$this->relationships['replies'] = $pagination->results;
+
+		$this->pagination = $pagination->links();
+
+		return $this;
 	}
 
 	/**

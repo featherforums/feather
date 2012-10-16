@@ -26,7 +26,7 @@
 		@if($discussion->recent)
 			Last reply by <a href="">Dayle</a>, on <span title="24th June, 2012 at 6:45am">23th June</span>
 		@elseif($discussion->author)
-			Started by {{ HTML::link_to_route('profile', $discussion->author->username, array($discussion->author->slug)) }}, {{ Feather\Date::meta($discussion->created_at) }}
+			Started by {{ HTML::link_to_route('profile', $discussion->author->username, array($discussion->author->slug)) }}, <a href="{{ URL::to_route('discussion.latest', array($discussion->id, $discussion->slug)) }}">{{ Feather\Date::meta($discussion->created_at) }}</a>
 		@endif
 		</p>
 

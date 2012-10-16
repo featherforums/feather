@@ -43,6 +43,7 @@ Route::get('(:bundle)/place/(:num)-(:any)/(:page?)', array('as' => 'place', 'use
 
 Route::any('(:bundle)/discussion/start', array('as' => 'start.discussion', 'uses' => 'feather core::discussion@start'));
 Route::any('(:bundle)/place/(:num)-(:any)/start', 'feather core::discussion@start');
+Route::get('(:bundle)/discussion/(:num)-(:any)/latest', array('as' => 'discussion.latest', 'uses' => 'feather core::discussion@index'));
 Route::any('(:bundle)/discussion/(:num)-(:any)/(:page?)', array('as' => 'discussion', 'uses' => 'feather core::discussion@index'));
 Route::any('(:bundle)/discussion/(:num)-(:any)/edit', array('as' => 'discussion.edit', 'uses' => 'feather core::discussion@edit'));
 Route::post('(:bundle)/discussion/preview', 'feather core::discussion@preview');

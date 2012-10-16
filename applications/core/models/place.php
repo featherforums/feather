@@ -133,8 +133,6 @@ class Place extends Ness {
 
 		$place = reset($places);
 
-		// Create a new paginator instance. We get the current page from the total amount of discussions.
-		// We'll then extract a slice from the discussions array based on the offset amount and the amount per page.
 		$pagination = Paginator::make($place->discussions, $total_results, $discussions_per_page);
 
 		return $place->fill(array(
@@ -265,6 +263,11 @@ class Place extends Ness {
 				$place->discussions = $filtered[$place->id];
 
 				$place->total->remaining = $place->total->discussions - count($filtered[$place->id]);
+
+				if($place->total->remaining < 0)
+				{
+					$place->total->remaining = 0;
+				}
 			}
 		}
 
@@ -286,6 +289,7 @@ class Place extends Ness {
 
 		$aggregates = Discussion::select(array('place_id', DB::raw('COUNT(*) as aggregate')))
 						->where_in('place_id', array_keys($places))
+						->where_draft(0)
 						->group_by('place_id')
 						->get();
 

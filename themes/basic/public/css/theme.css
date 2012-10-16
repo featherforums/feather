@@ -716,14 +716,16 @@ h1 > .discussion-counter {
 }
 
 .discussions > li.discussion > .meta > p {
-	color: #777;
+	color: #999;
 	margin: 0 12px 0 0;
 }
 
 .discussions > li.discussion > .meta > p a {
-	color: #444;
+	color: #555;
 	text-decoration: none;
 }
+
+.discussions > li.discussion > .meta > p a:hover { text-decoration: underline; }
 
 .discussions > li.discussion > .meta > span + a { margin: 0 0 0 4px; }
 

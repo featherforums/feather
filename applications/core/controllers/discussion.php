@@ -30,7 +30,7 @@ class Feather_Core_Discussion_Controller extends Feather_Base_Controller {
 				return $this->redirect->to_route('discussion.edit', array($discussion->id, $discussion->slug));
 			}
 
-			$author= $discussion->author;
+			$discussion->build($this->config->get('feather: db.replies.per_page'));
 
 			$this->breadcrumbs->drop($discussion->place)->drop($discussion->title);
 
