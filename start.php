@@ -28,7 +28,7 @@ $app = Illuminate\Foundation\Lightbulb::on();
 |
 */
 
-$app['path'] = __DIR__.'/app';
+$app['path'] = __DIR__.'/feather';
 
 $app['path.base'] = __DIR__;
 
