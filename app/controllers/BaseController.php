@@ -1,4 +1,7 @@
-<?php
+<?php namespace Feather\Controllers;
+
+use Controller;
+use Illuminate\Support\Facade;
 
 class BaseController extends Controller {
 

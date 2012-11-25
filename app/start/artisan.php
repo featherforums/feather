@@ -1,4 +1,4 @@
-<?php
+<?php namespace Feather;
 
 /*
 |--------------------------------------------------------------------------
@@ -10,3 +10,8 @@
 | the console gets access to each of the command object instances.
 |
 */
+
+$artisan->resolveCommands(array(
+	'command.feather',
+	'command.feather.publish'
+));

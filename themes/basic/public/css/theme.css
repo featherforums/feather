@@ -1,0 +1,423 @@
+body {
+	background-image: url('../img/background.png');
+	padding: 0;
+	margin: 0;
+	font-family: "Helvetica", "Helvetica Neue", Arial, sans-serif;
+	font-size: 13px;
+	color: #454545;
+	line-height: 1.45em;
+}
+
+input, button, textarea {
+	color: #454545;
+	font-family: "Helvetica", "Helvetica Neue", Arial, sans-serif;
+	font-size: 1em;
+}
+
+ul {
+	list-style-type: none;
+}
+
+a {
+	color: #d7634c;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+.group:after,
+fieldset dd:after,
+.alert-floated:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+/**
+ * The container element holds all other elements and is centered on our screen.
+ */
+.container {
+	position: relative;
+	width: 1140px;
+	margin: 0 auto;
+	padding: 0;
+}
+
+/**
+ * The header contains the logo and some vital navigation for getting around the forum.
+ * Our user related data will also appear here when they are signed in.
+ */
+.header > .logo {
+	clear: right;
+	float: left;
+}
+
+/**
+ * The user section of the header is above everything and is easily to see, it's fixed.
+ */
+.header > .user {
+	float: right;
+	margin: 10px 0 30px;
+	font-size: 14px;
+}
+
+.header > .user a {
+	text-decoration: none;
+}
+
+.header > .user > ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.header > .user > ul > li {
+	float: left;
+	padding: 0 18px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	background-color: #fff;
+	margin: 0 0 0 6px;
+	position: relative;
+	line-height: 34px;
+}
+
+.header > .user > ul > li.light { background-color: #d1c9c1; }
+.header > .user > ul > li.light:hover { background-color: #d9d2cb; }
+
+.header > .user > ul > li.dark { background: rgba(0, 0, 0, 0.6); }
+.header > .user > ul > li.dark:hover { background: rgba(0, 0, 0, 0.7); }
+
+.header > .user > ul > li.attn { background: rgba(215, 99, 76, 0.8); }
+.header > .user > ul > li.attn:hover { background: rgba(215, 99, 76, 0.95); }
+
+.header > .user > ul > li.link > a {
+	display: block;
+	margin: 0 -18px;
+	padding: 0 18px;
+}
+
+.header > .user > ul > li.dark a,
+.header > .user > ul > li.attn a {
+	color: #fff;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+}
+
+/**
+ * When a menu with options is hovered we show another dropdown menu.
+ */
+.header > .user > ul > li.has-options:hover {
+	-moz-border-radius: 3px 3px 0 0;
+	-webkit-border-radius: 3px 3px 0 0;
+	border-radius: 3px 3px 0 0;
+}
+
+.header > .user > ul > li.has-options > ul {
+	display: none;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	top: 40px;
+	left: 0;
+	line-height: normal;
+	width: 350px;
+	-moz-border-radius: 0 2px 2px 2px;
+	-webkit-border-radius: 0 2px 2px 2px;
+	border-radius: 0 2px 2px 2px;
+	overflow: hidden;
+}
+
+.header > .user > ul > li.dark.has-options > ul { background: rgba(0, 0, 0, 0.7); }
+.header > .user > ul > li.attn.has-options > ul { background: rgba(215, 99, 76, 0.95); }
+
+.header > .user > ul > li.has-options:hover > ul {
+	display: block;
+}
+
+/**
+ * Place a smaller bar after the hovered option so we can shift the actual dropdown below
+ * other menu items.
+ */
+.header > .user > ul > li.has-options:hover:before {
+	content: "";
+	display: block;
+	width: 100%;
+	height: 6px;
+	position: absolute;
+	top: 34px;
+	left: 0;
+}
+
+.header > .user > ul > li.dark.has-options:hover:before { background: rgba(0, 0, 0, 0.7); }
+.header > .user > ul > li.attn.has-options:hover:before { background: rgba(215, 99, 76, 0.95); }
+
+/**
+ * Items for the dropdown menu.
+ */
+.header > .user > ul > li.has-options > ul > li {
+	float: left;
+	width: 50%;
+	padding: 4px;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.header > .user > ul > li.has-options > ul > li > a {
+	display: block;
+	padding: 6px 14px;
+	color: #fff;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+}
+
+.header > .user > ul > li.attn.has-options > ul > li > a:hover {
+	background-color: #d15843;
+}
+
+/**
+ * The header navigation is floated right and consists of nice squares, love the squares.
+ */
+.header > .navigation {
+	float: right;
+}
+
+.header > .navigation > li {
+	float: left;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+	margin: 0 0 0 3px;
+}
+
+.header > .navigation > li > a {
+	display: block;
+	color: #999;
+	text-shadow: 0 1px 0 #fff;
+	text-decoration: none;
+	font-weight: bold;
+	font-size: 14px;
+	text-transform: lowercase;
+	padding: 8px 16px;
+}
+
+.header > .navigation > li:hover {
+	background: rgba(0, 0, 0, 0.1);
+}
+
+.header > .navigation > li.important {
+	background: rgba(215, 99, 76, 0.6);
+}
+
+.header > .navigation > li.important:hover {
+	background: rgba(215, 99, 76, 0.8);
+}
+
+.header > .navigation > li.selected {
+	background: rgba(0, 0, 0, 0.25);
+}
+
+.header > .navigation > li.selected > a,
+.header > .navigation > li.important > a {
+	color: #fff;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+}
+
+/**
+ * The main body is a large container that stands out from the background.
+ */
+.body {
+	margin: 30px 0 0;
+	background-color: #fff;
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+	padding: 10px 10px 20px;
+	-moz-border-radius: 0 0 2px 2px;
+	-webkit-border-radius: 0 0 2px 2px;
+	border-radius: 0 0 2px 2px;
+}
+
+.body .content {
+	clear: both;
+}
+
+/**
+ * The breadcrumbs get nice little arrow separators.
+ */
+.breadcrumbs {
+	margin: -10px -10px 10px;
+	background-color: #f2f2f2;
+	border-bottom: 1px solid #e6e6e6;
+	text-shadow: 0 1px 0 #fff;
+	-moz-border-radius: 2px 2px 0 0;
+	-webkit-border-radius: 2px 2px 0 0;
+	border-radius: 2px 2px 0 0;
+	line-height: 40px;
+}
+
+.breadcrumbs > li,
+.breadcrumbs > li > a {
+	color: #666;
+}
+
+.breadcrumbs > li {
+	display: inline-block;
+	margin: 0 0 0 -3px;
+	cursor: default;
+}
+
+.breadcrumbs > li:first-child { margin-left: 0; }
+
+.breadcrumbs > li,
+.breadcrumbs > li > a {
+	position: relative;
+	padding: 0 4px 0 26px;
+	color: #989898;
+}
+
+.breadcrumbs > li > a {
+	display: block;
+	text-decoration: none;
+	margin: 0 -4px 0 -26px;
+}
+
+.breadcrumbs > li:first-child,
+.breadcrumbs > li:first-child > a {
+	position: relative;
+	padding: 0 4px 0 10px;
+	color: #989898;
+}
+
+.breadcrumbs > li:first-child > a {
+	margin: 0 -4px 0 -10px;
+}
+
+.breadcrumbs > li > a:hover,
+.breadcrumbs > li > a:focus {
+	color: #555;
+}
+
+.breadcrumbs > li:hover {
+	background-color: #f9f9f9;
+}
+
+.breadcrumbs > li:active {
+	border-color: #f1f1f1;
+}
+
+.breadcrumbs > li:before {
+	position: absolute;
+	display: inline-block;
+	content: "";
+	top: -1px;
+	right: -20px;
+	border-top: 21px solid rgba(255, 255, 255, 0);
+	border-bottom: 21px solid rgba(255, 255, 255, 0);
+	border-left: 19px solid #e2e2e2;
+	z-index: 1;
+}
+
+.breadcrumbs > li:hover:before,
+.breadcrumbs > li:focus:before {
+	border-left-color: #d7d7d7;
+}
+
+.breadcrumbs > li:after {
+	position: absolute;
+	display: inline-block;
+	content: "";
+	top: -1px;
+	right: -18px;
+	border-top: 21px solid rgba(255, 255, 255, 0);
+	border-bottom: 21px solid rgba(255, 255, 255, 0);
+	border-left: 19px solid #f2f2f2;
+	z-index: 1;
+}
+
+.breadcrumbs > li:hover:after {
+	border-left-color: #f9f9f9;
+}
+
+.breadcrumbs > li:hover { text-decoration: none; }
+
+/**
+ * Headings appear throughout the body and are a different font and weight
+ * then other items.
+ */
+.body h1,
+.body h2,
+.body h3,
+.body h4 {
+	margin: 0 0 16px;
+	font-family: "Trebuchet MS", "Ubuntu", serif;
+	font-size: 24px;
+	color: #999;
+	text-transform: uppercase;
+}
+
+.body h2 { font-size: 20px; }
+.body h3 { font-size: 18px; }
+.body h4 {
+	font-size: 14px;
+	display: inline;
+}
+
+.body h1 a,
+.body h2 a {
+	text-decoration: none;
+}
+
+.body p:first-child { margin-top: 0; }
+.body p:last-child { margin-bottom: 0; }
+
+/**
+ * Body halves allow the page to be split in two equal halves.
+ */
+.halves > .half-left {
+	float: left;
+	width: 49%;
+}
+
+.halves > .half-right {
+	margin: 0 0 0 51%;
+}
+
+/**
+ * The footer simply appears under the body and nothing more.
+ */
+.footer {
+	font-size: 11px;
+	padding: 10px 0;
+	color: #999;
+}
+
+.footer > .powered {
+	float: left;
+	margin: 0;
+}
+
+.footer > .stats {
+	float: right;
+}
+
+.footer > .stats > li {
+	float: left;
+	margin: 0 0 0 24px;
+}
+
+.footer > .stats .unit {
+	display: inline-block;
+	background-color: #999;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	color: #fff;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+	padding: 1px 4px;
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+	font-weight: bold;
+	margin: 0 4px 0 0;
+}

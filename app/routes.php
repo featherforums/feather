@@ -11,4 +11,4 @@
 |
 */
 
-Route::get('/', 'HomeController@showHomepage');
+Route::get('/', 'Feather\Controllers\HomeController@showHomepage');

@@ -81,7 +81,7 @@ return array(
 	'aliases' => array(
 
 		'Controller' => 'Illuminate\Routing\Controllers\Controller',
-		'Eloquent'   => 'Illuminate\Database\Eloquent\Model',
+		'Eloquent'   => 'Illuminate\Database\Eloquent\Model'
 
 	),
 
@@ -121,7 +121,7 @@ return array(
 		'Illuminate\Translation\TranslationServiceProvider',
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
-		'Basset\BassetServiceProvider'
+		'Basset\BassetServiceProvider',
 
 	),
 

@@ -5,10 +5,15 @@
 	},
 	"autoload": {
 		"classmap": [
-			"feather/controllers",
-			"feather/models",
-			"feather/database/migrations",
-			"feather/tests/TestCase.php"
+			"feather/extensions",
+			"feather/presenter",
+			"feather/database",
+			"feather/console",
+			"app/controllers",
+			"app/models",
+			"app/database/migrations",
+			"tests/TestCase.php",
+			"extensions"
 		]
 	},
 	"minimum-stability": "dev"
