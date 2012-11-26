@@ -1,6 +1,20 @@
 <?php
 
+use Mockery as m;
+
 class TestCase extends Illuminate\Foundation\Testing\TestCase {
+
+
+    /**
+     * Close mockery.
+     * 
+     * @return void
+     */
+    public function tearDown()
+    {
+        m::close();
+    }
+
 
     /**
      * Creates the application.
@@ -13,7 +27,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
         $testEnvironment = 'testing';
 
-    	return require __DIR__.'/../../start.php';
+    	return require __DIR__.'/../start.php';
     }
 
 }
