@@ -9,7 +9,7 @@
 |
 */
 
-if (!defined('FEATHER_VERSION'))
+if ( ! defined('FEATHER_VERSION'))
 {
 	define('FEATHER_VERSION', '1.0.0');
 }
@@ -36,16 +36,19 @@ $app['path.themes'] = $app['path'].'/themes';
 |
 */
 
-if ($app['cache']->has('config'))
+if ( ! $app->runningInConsole())
 {
-	$app['cache']->forget('config');
-}
+	if ($app['cache']->has('config'))
+	{
+		$app['cache']->forget('config');
+	}
 
-$config = new Models\Config;
+	$config = new Models\Config;
 
-foreach ($config->everything() as $item)
-{
-	$app['config']->set("feather.{$item->name}", $item->value);
+	foreach ($config->everything() as $item)
+	{
+		$app['config']->set("feather.{$item->name}", $item->value);
+	}
 }
 
 /*
@@ -113,9 +116,12 @@ $app['feather.presenter']->prepare();
 |
 */
 
-$extensions = new Models\Extension;
+if ( ! $app->runningInConsole())
+{
+	$extensions = new Models\Extension;
 
-$app['feather.extensions']->registerExtensions($extensions->getActivated());
+	$app['feather.extensions']->registerExtensions($extensions->getActivated());
+}
 
 /*
 |--------------------------------------------------------------------------
