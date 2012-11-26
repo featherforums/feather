@@ -7,17 +7,16 @@ class ExtensionServiceProvider extends ServiceProvider {
 	/**
 	 * Register the service provider.
 	 * 
-	 * @param  Illuminate\Foundation\Application  $app
 	 * @return void
 	 */
-	public function register($app)
+	public function register()
 	{
-		$app['feather.extensions'] = $app->share(function($app)
+		$this->app['feather.extensions'] = $this->app->share(function($app)
 		{
 			return new Dispatcher($app['files'], $app['path.extensions']);
 		});
 
-		$app['feather.extensions']->setApplication($app);
+		$this->app['feather.extensions']->setApplication($this->app);
 	}
 
 }

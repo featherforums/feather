@@ -13,5 +13,6 @@
 
 $artisan->resolveCommands(array(
 	'command.feather',
-	'command.feather.publish'
+	'command.feather.publish',
+	'command.feather.install'
 ));

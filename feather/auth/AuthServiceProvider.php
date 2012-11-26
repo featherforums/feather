@@ -9,19 +9,18 @@ class AuthServiceProvider extends ServiceProvider {
 	/**
 	 * Register the service provider.
 	 * 
-	 * @param  Illuminate\Foundation\Application  $app
 	 * @return void
 	 */
-	public function register($app)
+	public function register()
 	{
-		$app['auth']->extend('feather', function($app)
+		$this->app['auth']->extend('feather', function($app)
 		{
 			$provider = new FeatherUserProvider($app['hash'], $app['feather']['migrator']);
 
 			return new Guard($provider, $app['session']);
 		});
 
-		$app['config']->set('auth.driver', 'feather');
+		$this->app['config']->set('auth.driver', 'feather');
 	}
 
 }

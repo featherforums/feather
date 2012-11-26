@@ -69,45 +69,9 @@ class Extension {
 				return $handler($parameters);
 			}
 
-			// If the handler is a method that exists on the extension object then execute
-			// the method and return its result.
-			elseif (method_exists($extension, $handler))
-			{
-				return call_user_func_array(array($extension, $handler), $parameters);
-			}
-
-			// By default we'll return null, as the event dispatcher will expect a non
-			// null result.
-			return null;
+			// Finally assume that the handler is a method on the extension itself.
+			return call_user_func_array(array($extension, $handler), $parameters);
 		});
 	}
-
-	/**
-	 * Executed when an extension is installed.
-	 * 
-	 * @return void
-	 */
-	public function installed(){}
-
-	/**
-	 * Executed when an extension is activated.
-	 * 
-	 * @return void
-	 */
-	public function activated(){}
-
-	/**
-	 * Executed when an extension is deactivated.
-	 * 
-	 * @return void
-	 */
-	public function deactivated(){}
-
-	/**
-	 * Executed when an extension is removed.
-	 * 
-	 * @return void
-	 */
-	public function removed(){}
 
 }

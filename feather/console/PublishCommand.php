@@ -20,7 +20,7 @@ class PublishCommand extends Command {
 	 *
 	 * @var string
 	 */
-	protected $description = 'Publish extensions or themes';
+	protected $description = 'Publish extension or theme assets';
 
 	/**
 	 * Asset publisher instance.

@@ -9,7 +9,10 @@
 |
 */
 
-define('FEATHER_VERSION', '1.0.0');
+if (!defined('FEATHER_VERSION'))
+{
+	define('FEATHER_VERSION', '1.0.0');
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -20,8 +23,8 @@ define('FEATHER_VERSION', '1.0.0');
 |
 */
 
-$app['path.extensions'] = $app['path.base'].'/extensions';
-$app['path.themes'] = $app['path.base'].'/themes';
+$app['path.extensions'] = $app['path'].'/extensions';
+$app['path.themes'] = $app['path'].'/themes';
 
 /*
 |--------------------------------------------------------------------------
@@ -62,8 +65,32 @@ $providers = array(
 
 foreach ($providers as $provider)
 {
-	$app->register(new $provider);
+	$app->register(new $provider($app));
 }
+
+/*
+|--------------------------------------------------------------------------
+| Require The Facades File
+|--------------------------------------------------------------------------
+|
+| We'll now register some facades to easily access some of Feather's
+| components statically.
+|
+*/
+
+require_once __DIR__.'/facades.php';
+
+/*
+|--------------------------------------------------------------------------
+| Require The Console File
+|--------------------------------------------------------------------------
+|
+| Commands are registered with the application container and when Artisan
+| is run they are resolved from the Artisan start file.
+|
+*/
+
+require __DIR__.'/console.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -89,30 +116,6 @@ $app['feather.presenter']->prepare();
 $extensions = new Models\Extension;
 
 $app['feather.extensions']->registerExtensions($extensions->getActivated());
-
-/*
-|--------------------------------------------------------------------------
-| Require The Facades File
-|--------------------------------------------------------------------------
-|
-| We'll now register some facades to easily access some of Feather's
-| components statically.
-|
-*/
-
-require __DIR__.'/facades.php';
-
-/*
-|--------------------------------------------------------------------------
-| Require The Console File
-|--------------------------------------------------------------------------
-|
-| Commands are registered with the application container and when Artisan
-| is run they are resolved from the Artisan start file.
-|
-*/
-
-require __DIR__.'/console.php';
 
 /*
 |--------------------------------------------------------------------------

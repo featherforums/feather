@@ -74,6 +74,16 @@ class Dispatcher extends Container {
 	}
 
 	/**
+	 * Get the started extensions.
+	 * 
+	 * @return array
+	 */
+	public function getStarted()
+	{
+		return $this->started;
+	}
+
+	/**
 	 * Register an extension with the dispatcher.
 	 * 
 	 * @param  Feather\Models\Extension  $extension
@@ -101,24 +111,46 @@ class Dispatcher extends Container {
 	}
 
 	/**
+	 * Determine if an extension is regisetered.
+	 * 
+	 * @param  string  $identifier
+	 * @return bool
+	 */
+	public function isRegistered($identifier)
+	{
+		return isset($this["extension.{$identifier}"]);
+	}
+
+	/**
+	 * Determine if an extension is started.
+	 * 
+	 * @param  string  $identifier
+	 * @return bool
+	 */
+	public function isStarted($identifier)
+	{
+		return in_array($identifier, $this->started);
+	}
+
+	/**
 	 * Start an extension.
 	 * 
-	 * @param  string  $extension
+	 * @param  string  $identifier
 	 * @return void
 	 */
-	public function start($extension)
+	public function start($identifier)
 	{
-		if (in_array($extension, $this->started) or ! isset($this["extension.{$extension}"]))
+		if ($this->isStarted($identifier) or ! $this->isRegistered($identifier))
 		{
 			return;
 		}
-		
-		$extension = $this["extension.{$extension}"];
 
-		foreach (new FilesystemIterator($extension->path) as $file)
+		$extension = $this["extension.{$identifier}"];
+
+		foreach ($this->findExtensions($extension->path) as $file)
 		{
 			$name = $file->getBasename(".{$file->getExtension()}");
-
+		
 			if (ends_with($name, 'Extension'))
 			{
 				$location = str_replace('/', '\\', $extension->location);
@@ -127,16 +159,36 @@ class Dispatcher extends Container {
 
 				// Instantiate the new extension class and assign it to the extensions loaded classes. The class
 				// receives an instance of the Laravel application.
-				$extension->loaded = array_merge($extension->loaded, array($class => new $class($this->app)));
+				$extension->loaded = array_merge($extension->loaded, array($class => $this->loadExtension($class)));
 
-				// If the extension has the start method we'll fire it, this is a great place for extensions
-				// to do any bootstrapping or listening to events without having to override the constructor.
-				if (method_exists($extension->loaded[$class], 'start'))
-				{
-					$extension->loaded[$class]->start($this->app);
-				}
+				$extension->loaded[$class]->start($this->app);
 			}
 		}
+
+		// Add the extension to the array of started extensions.
+		$this->started[] = $identifier;
+	}
+
+	/**
+	 * Get a FilesystemIterator to find the extensions within a path.
+	 * 
+	 * @param  string  $path
+	 * @return FilesystemIterator
+	 */
+	public function findExtensions($path)
+	{
+		return new FilesystemIterator($path);
+	}
+
+	/**
+	 * Create a new extension instance.
+	 * 
+	 * @param  string  $class
+	 * @return Feather\Extensions\Extension
+	 */
+	public function loadExtension($class)
+	{
+		return new $class($this->app);
 	}
 
 	public function fire()

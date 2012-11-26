@@ -3,17 +3,22 @@
 		"illuminate/foundation": ">=1.0.0",
 		"jasonlewis/basset": "*"
 	},
+	"require-dev": {
+		"mockery/mockery": "0.7.*"
+	},
 	"autoload": {
 		"classmap": [
-			"feather/extensions",
-			"feather/presenter",
-			"feather/database",
-			"feather/console",
+			"feather/Auth",
+			"feather/Console",
+			"feather/Database",
+			"feather/Extensions",
+			"feather/Migrator",
+			"feather/Presenter",
 			"app/controllers",
 			"app/models",
+			"app/extensions",
 			"app/database/migrations",
-			"tests/TestCase.php",
-			"extensions"
+			"tests/TestCase.php"
 		]
 	},
 	"minimum-stability": "dev"

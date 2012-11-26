@@ -1,4 +1,4 @@
-<?php namespace Feather;
+<?php namespace Feather\Facades;
 
 use Illuminate\Support\Facade;
 

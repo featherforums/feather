@@ -8,12 +8,11 @@ class MigratorServiceProvider extends ServiceProvider {
 	/**
 	 * Register the service provider.
 	 *
-	 * @param  Illuminate\Foundation\Application  $app
 	 * @return void
 	 */
-	public function register($app)
+	public function register()
 	{
-		$app['feather']['migrator'] = $app->share(function() use ($app)
+		$this->app['feather.migrator'] = $this->app->share(function($app)
 		{
 			// Get the active migrator driver from the database. We'll then determine the connection to be used
 			// for the migrator.
