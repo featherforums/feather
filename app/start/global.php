@@ -120,7 +120,7 @@ if ( ! $app->runningInConsole())
 {
 	$extensions = new Models\Extension;
 
-	$app['feather.extensions']->registerExtensions($extensions->getActivated());
+	$app['feather.extensions']->registerExtensions($extensions->getActivated()->toArray());
 }
 
 /*
