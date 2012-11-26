@@ -1,11 +1,12 @@
 <?php namespace Feather\Extensions;
 
+use ArrayAccess;
 use FilesystemIterator;
-use Illuminate\Container;
 use Illuminate\Filesystem;
+use InvalidArgumentException;
 use Feather\Models\Extension as ExtensionModel;
 
-class Dispatcher extends Container {
+class Dispatcher implements ArrayAccess {
 
 	/**
 	 * Laravel application instance.
@@ -36,6 +37,13 @@ class Dispatcher extends Container {
 	protected $started = array();
 
 	/**
+	 * Registered extensions
+	 * 
+	 * @var array
+	 */
+	protected $extensions = array();
+
+	/**
 	 * Create a new dispatcher instance.
 	 * 
 	 * @param  Illuminate\Filesystem  $files
@@ -51,10 +59,10 @@ class Dispatcher extends Container {
 	/**
 	 * Set the Laravel application instance.
 	 * 
-	 * @param  Illuminate\Container  $app
+	 * @param  Illuminate\Foundation\Application  $app
 	 * @return void
 	 */
-	public function setApplication(Container $app)
+	public function setApplication($app)
 	{
 		$this->app = $app;
 	}
@@ -91,6 +99,8 @@ class Dispatcher extends Container {
 	 */
 	public function register(array $extension)
 	{
+		$identifier = $extension['identifier'];
+
 		$path = $this->path.'/'.$extension['location'];
 
 		if ($this->files->exists($path))
@@ -198,6 +208,56 @@ class Dispatcher extends Container {
 	public function fire()
 	{
 		
+	}
+
+	/**
+	 * Determine if a given offset exists.
+	 *
+	 * @param  string  $key
+	 * @return bool
+	 */
+	public function offsetExists($key)
+	{
+		return isset($this->extensions[$key]);
+	}
+
+	/**
+	 * Get the value at a given offset.
+	 *
+	 * @param  string  $key
+	 * @return mixed
+	 */
+	public function offsetGet($key)
+	{
+		if ( ! isset($this->extensions[$key]))
+		{
+			throw new InvalidArgumentException("Type {$key} is not bound.");
+		}
+
+		return $this->extensions[$key];
+	}
+
+	/**
+	 * Set the value at a given offset.
+	 *
+	 * @param  string  $key
+	 * @param  mixed   $value
+	 * @return void
+	 */
+	public function offsetSet($key, $value)
+	{
+		$this->extensions[$key] = $value;
+	}
+
+	/**
+	 * Unset the value at a given offset.
+	 *
+	 * @param  string  $key
+	 * @return void
+	 */
+	public function offsetUnset($key)
+	{
+		unset($this->extensions[$key]);
 	}
 
 }
