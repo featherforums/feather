@@ -1,7 +1,6 @@
 <?php
 
 use Mockery as m;
-use Feather\Models\Extension;
 
 class ExtensionTest extends PHPUnit_Framework_TestCase {
 
@@ -9,13 +8,8 @@ class ExtensionTest extends PHPUnit_Framework_TestCase {
 	public function testExtensionsAreBootstrapped()
 	{
 		list($app, $dispatcher) = $this->getApplicationAndDispatcher();
-		$extension = new Extension(array(
-			'location' => 'extension/location',
-			'identifier' => 'foo',
-			'auto' => true
-		));
+		$extension = array('location' => 'extension/location', 'identifier' => 'foo', 'auto' => true);
 		$dispatcher->register($extension);
-
 		$this->assertEquals('success', $app['events']->first('start_test'));
 	}
 
@@ -23,17 +17,13 @@ class ExtensionTest extends PHPUnit_Framework_TestCase {
 	public function testExtensionsCanListenForEvents()
 	{
 		list($app, $dispatcher) = $this->getApplicationAndDispatcher();
-		$extension = new Extension(array(
-			'location' => 'extension/location',
-			'identifier' => 'foo',
-			'auto' => true
-		));
-		$dispatcher->register($extension);
-		$extension->loaded['Feather\Extensions\extension\location\FooExtension']->listen('foobar', function()
+		$extension = array('location' => 'extension/location', 'identifier' => 'foo', 'auto' => true);
+		$extension = $dispatcher->register($extension);
+		$extension['loaded']['Feather\Extensions\extension\location\FooExtension']->listen('foobar', function()
 		{
 			return 'barfoo';
 		});
-		$extension->loaded['Feather\Extensions\extension\location\FooExtension']->listen('barfoo', function()
+		$extension['loaded']['Feather\Extensions\extension\location\FooExtension']->listen('barfoo', function()
 		{
 			return 'foobar';
 		});
@@ -45,17 +35,13 @@ class ExtensionTest extends PHPUnit_Framework_TestCase {
 	public function testExtensionsCanOverrideEvents()
 	{
 		list($app, $dispatcher) = $this->getApplicationAndDispatcher();
-		$extension = new Extension(array(
-			'location' => 'extension/location',
-			'identifier' => 'foo',
-			'auto' => true
-		));
-		$dispatcher->register($extension);
-		$extension->loaded['Feather\Extensions\extension\location\FooExtension']->listen('foobar', function()
+		$extension = array('location' => 'extension/location', 'identifier' => 'foo', 'auto' => true);
+		$extension = $dispatcher->register($extension);
+		$extension['loaded']['Feather\Extensions\extension\location\FooExtension']->listen('foobar', function()
 		{
 			return 'barfoo';
 		});
-		$extension->loaded['Feather\Extensions\extension\location\FooExtension']->override('foobar', function()
+		$extension['loaded']['Feather\Extensions\extension\location\FooExtension']->override('foobar', function()
 		{
 			return 'barbar';
 		});
@@ -66,13 +52,9 @@ class ExtensionTest extends PHPUnit_Framework_TestCase {
 	public function testExtensionsCanUseMethods()
 	{
 		list($app, $dispatcher) = $this->getApplicationAndDispatcher();
-		$extension = new Extension(array(
-			'location' => 'extension/location',
-			'identifier' => 'foo',
-			'auto' => true
-		));
-		$dispatcher->register($extension);
-		$extension->loaded['Feather\Extensions\extension\location\FooExtension']->listen('foobar', 'foo');
+		$extension = array('location' => 'extension/location', 'identifier' => 'foo', 'auto' => true);
+		$extension = $dispatcher->register($extension);
+		$extension['loaded']['Feather\Extensions\extension\location\FooExtension']->listen('foobar', 'foo');
 		$this->assertEquals('foomethod', $app['events']->first('foobar'));
 	}
 
