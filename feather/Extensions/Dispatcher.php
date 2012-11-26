@@ -86,28 +86,30 @@ class Dispatcher extends Container {
 	/**
 	 * Register an extension with the dispatcher.
 	 * 
-	 * @param  Feather\Models\Extension  $extension
-	 * @return void
+	 * @param  array  $extension
+	 * @return array
 	 */
-	public function register(ExtensionModel $extension)
+	public function register(array $extension)
 	{
-		$path = $this->path.'/'.$extension->location;
+		$path = $this->path.'/'.$extension['location'];
 
 		if ($this->files->exists($path))
 		{
-			$extension->path = $path;
+			$extension['path'] = $path;
 
-			$extension->loaded = array();
+			$extension['loaded'] = array();
 
-			$this["extension.{$extension->identifier}"] = $extension;
+			$this["extension.{$extension['identifier']}"] = $extension;
 
 			// If an extension is set to be automatically started then we'll hand it off to
 			// the starting method.
-			if ($extension->auto)
+			if ($extension['auto'])
 			{
-				$this->start($extension->identifier);
+				$this->start($extension['identifier']);
 			}
 		}
+
+		return $this["extension.{$extension['identifier']}"];
 	}
 
 	/**
@@ -147,23 +149,25 @@ class Dispatcher extends Container {
 
 		$extension = $this["extension.{$identifier}"];
 
-		foreach ($this->findExtensions($extension->path) as $file)
+		foreach ($this->findExtensions($extension['path']) as $file)
 		{
 			$name = $file->getBasename(".{$file->getExtension()}");
 		
 			if (ends_with($name, 'Extension'))
 			{
-				$location = str_replace('/', '\\', $extension->location);
+				$location = str_replace('/', '\\', $extension['location']);
 
 				$class = "Feather\\Extensions\\{$location}\\{$name}";
 
 				// Instantiate the new extension class and assign it to the extensions loaded classes. The class
 				// receives an instance of the Laravel application.
-				$extension->loaded = array_merge($extension->loaded, array($class => $this->loadExtension($class)));
+				$extension['loaded'][$class] = $this->loadExtension($class);
 
-				$extension->loaded[$class]->start($this->app);
+				$extension['loaded'][$class]->start($this->app);
 			}
 		}
+
+		$this["extension.{$identifier}"] = $extension;
 
 		// Add the extension to the array of started extensions.
 		$this->started[] = $identifier;
