@@ -117,9 +117,9 @@ class Dispatcher implements ArrayAccess {
 			{
 				$this->start($extension['identifier']);
 			}
-		}
 
-		return $this["extension.{$extension['identifier']}"];
+			return $this["extension.{$extension['identifier']}"];
+		}
 	}
 
 	/**
